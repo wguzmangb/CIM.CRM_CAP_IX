@@ -99,7 +99,7 @@
     color: var(--cim-muted);
 }
 
-/* El folio y la venta, en la misma celda */
+
 .cot-folio {
     display: block;
     font-weight: 600;
@@ -118,7 +118,7 @@
     color: var(--cim-muted);
 }
 
-/* El estado, cada uno con su color */
+
 .etiqueta-estado {
     display: inline-block;
     padding: .2rem .6rem;
@@ -168,7 +168,7 @@
         color: var(--cim-danger);
     }
 
-/* ── El formulario ──────────────────────────────── */
+
 
 .cot-form .form-label {
     font-size: .75rem;
@@ -221,7 +221,7 @@
     color: var(--cim-hint);
 }
 
-/* ── Los renglones ──────────────────────────────── */
+
 
 .cot-renglones {
     margin-top: 2rem;
@@ -316,7 +316,7 @@
         color: var(--cim-danger);
     }
 
-/* ── Los totales ──────────────────────────────── */
+
 
 .cot-totales {
     display: flex;
@@ -363,7 +363,7 @@
             }
 
 
-/* ── La ficha ──────────────────────────────── */
+
 
 .ficha {
     display: grid;
@@ -428,7 +428,7 @@
         padding-top: .65rem;
         padding-bottom: .65rem;
     }
-/* ── El borrado ──────────────────────────────── */
+
 
 .aviso-borrar {
     display: flex;
