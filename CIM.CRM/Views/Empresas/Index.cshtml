@@ -1,0 +1,132 @@
+@model IEnumerable<CIM.CRM.Models.Empresa>
+@{
+    var veTodo = (bool?)ViewData["VeTodo"] == true;
+
+    ViewData["Title"] = "Empresas";
+    ViewData["Titulo"] = "Empresas";
+    ViewData["Subtitulo"] = veTodo
+        ? "Toda la cartera de la empresa"
+        : "Las cuentas que tienes asignadas";
+    var buscar = ViewData["Buscar"] as string;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/empresas.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <form asp-action="Index" method="get" class="emp-buscador">
+            <input type="text" name="buscar" value="@buscar" placeholder="Buscar por nombre o RFC" />
+            <button type="submit" class="btn-mini">Buscar</button>
+            @if (!string.IsNullOrWhiteSpace(buscar))
+            {
+                <a asp-action="Index" class="liga-limpiar">Limpiar</a>
+            }
+        </form>
+
+        <a asp-action="Create" class="cim-btn">Nueva empresa</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="cim-vacio">
+            @if (string.IsNullOrWhiteSpace(buscar))
+            {
+                <text>Todavía no hay empresas registradas.</text>
+            }
+            else
+            {
+                <text>Ninguna empresa coincide con «@buscar».</text>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="tabla-cim">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>RFC</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        @if (veTodo)
+                        {
+                            <th>Ejecutivo</th>
+                        }
+                        <th class="acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var empresa in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="principal" asp-action="Details" asp-route-id="@empresa.EmpresaId">
+                                @empresa.Nombre
+                            </a>
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(empresa.RFC))
+                            {
+                                <span class="sin-dato">—</span>
+                            }
+                            else
+                            {
+                                @empresa.RFC
+                            }
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(empresa.Telefono))
+                            {
+                                <span class="sin-dato">—</span>
+                            }
+                            else
+                            {
+                                @empresa.Telefono
+                            }
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(empresa.Email))
+                            {
+                                <span class="sin-dato">—</span>
+                            }
+                            else
+                            {
+                                @empresa.Email
+                            }
+                        </td>
+                        @if (veTodo)
+                        {
+                            <td>
+                                @if (empresa.Usuario != null)
+                                {
+                                    var nom = empresa.Usuario.Nombre ?? "";
+                                    var ape = empresa.Usuario.Apellidos ?? "";
+                                    var ini = ((nom.Length > 0 ? nom[0].ToString() : "?")
+                                            + (ape.Length > 0 ? ape[0].ToString() : "")).ToUpper();
+                                    <span class="persona">
+                                        <span class="iniciales">@ini</span>
+                                        <span>@($"{nom} {ape}".Trim())</span>
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="sin-dato">Sin asignar</span>
+                                }
+                            </td>
+                        }
+                        <td class="acciones">
+                            <a class="btn-mini" asp-action="Edit" asp-route-id="@empresa.EmpresaId">Editar</a>
+                            <a class="btn-mini peligro" asp-action="Delete" asp-route-id="@empresa.EmpresaId">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pie-conteo">@Model.Count() empresa(s).</div>
+    }
+</div>

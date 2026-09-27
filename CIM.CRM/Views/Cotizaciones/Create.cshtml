@@ -1,0 +1,164 @@
+﻿@model CIM.CRM.Models.Cotizacion
+@{
+    ViewData["Title"] = "Nueva cotización";
+    ViewData["Titulo"] = "Nueva cotización";
+    ViewData["Subtitulo"] = "El precio que se le manda al cliente";
+    var renglones = Model.Detalles.ToList();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cotizaciones.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>Datos de la cotización</h2>
+        <a class="liga" asp-action="Index">Volver a la lista</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <form asp-action="Create" method="post" class="cot-form">
+            <div asp-validation-summary="ModelOnly" class="cim-aviso cim-aviso-error"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="OportunidadId" class="form-label"></label>
+                    <select asp-for="OportunidadId" class="form-select"
+                            asp-items="@(ViewData["Oportunidades"] as SelectList)">
+                        <option value="">— Escoja la venta —</option>
+                    </select>
+                    <span class="nota-campo">La cotización pertenece a una venta, no a la empresa.</span>
+                    <span asp-validation-for="OportunidadId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Folio" class="form-label"></label>
+                    <input asp-for="Folio" class="form-control" autofocus />
+                    <span asp-validation-for="Folio" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Fecha" class="form-label"></label>
+                    <input asp-for="Fecha" class="form-control" type="date"
+                           value="@Model.Fecha.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="Fecha" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Estado" class="form-label"></label>
+                    <select asp-for="Estado" class="form-select"
+                            asp-items="@(ViewData["Estados"] as SelectList)">
+                    </select>
+                    <span asp-validation-for="Estado" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="cot-renglones">
+                <div class="titulo-bloque">
+                    <h3>Renglones</h3>
+                    <button type="button" class="btn-mini" id="agregar-renglon">Agregar renglón</button>
+                </div>
+
+                <table class="tabla-renglones">
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th class="col-cantidad">Cantidad</th>
+                            <th class="col-precio">Precio</th>
+                            <th class="col-importe">Importe</th>
+                            <th class="col-quitar"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-renglones">
+                        @for (var i = 0; i < renglones.Count; i++)
+                        {
+                            var r = renglones[i];
+                            <tr class="renglon">
+                                <td>
+                                    <input type="hidden" name="Detalles.Index" value="@i" />
+                                    <input type="text" class="form-control descripcion"
+                                           name="Detalles[@i].Descripcion" value="@r.Descripcion"
+                                           placeholder="Mantenimiento preventivo por visita" />
+                                    @Html.ValidationMessage($"Detalles[{i}].Descripcion",
+                                        new { @class = "text-danger small" })
+                                </td>
+                                <td class="col-cantidad">
+                                    <input type="number" class="form-control cantidad" step="0.01" min="0"
+                                           name="Detalles[@i].Cantidad"
+                                           value="@(r.Cantidad == 0 ? "" : r.Cantidad.ToString("0.##"))" />
+                                    @Html.ValidationMessage($"Detalles[{i}].Cantidad",
+                                        new { @class = "text-danger small" })
+                                </td>
+                                <td class="col-precio">
+                                    <input type="number" class="form-control precio" step="0.01" min="0"
+                                           name="Detalles[@i].Precio"
+                                           value="@(r.Precio == 0 ? "" : r.Precio.ToString("0.##"))" />
+                                    @Html.ValidationMessage($"Detalles[{i}].Precio",
+                                        new { @class = "text-danger small" })
+                                </td>
+                                <td class="col-importe">
+                                    <span class="importe-renglon">0.00</span>
+                                </td>
+                                <td class="col-quitar">
+                                    <button type="button" class="btn-quitar" title="Quitar renglón">&times;</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="cot-totales">
+                    <dl>
+                        <div class="renglon">
+                            <dt>Subtotal</dt>
+                            <dd id="vista-subtotal">0.00</dd>
+                        </div>
+                        <div class="renglon">
+                            <dt>IVA 16%</dt>
+                            <dd id="vista-impuesto">0.00</dd>
+                        </div>
+                        <div class="renglon total">
+                            <dt>Total</dt>
+                            <dd id="vista-total">0.00</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="pie-form">
+                <button type="submit" class="cim-btn">Guardar cotización</button>
+                <a asp-action="Index" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<template id="plantilla-renglon">
+    <tr class="renglon">
+        <td>
+            <input type="hidden" name="Detalles.Index" value="__i__" />
+            <input type="text" class="form-control descripcion" name="Detalles[__i__].Descripcion"
+                   placeholder="Mantenimiento preventivo por visita" />
+        </td>
+        <td class="col-cantidad">
+            <input type="number" class="form-control cantidad" step="0.01" min="0"
+                   name="Detalles[__i__].Cantidad" />
+        </td>
+        <td class="col-precio">
+            <input type="number" class="form-control precio" step="0.01" min="0"
+                   name="Detalles[__i__].Precio" />
+        </td>
+        <td class="col-importe">
+            <span class="importe-renglon">0.00</span>
+        </td>
+        <td class="col-quitar">
+            <button type="button" class="btn-quitar" title="Quitar renglón">&times;</button>
+        </td>
+    </tr>
+</template>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script src="~/js/cotizacion-renglones.js" asp-append-version="true"></script>
+}

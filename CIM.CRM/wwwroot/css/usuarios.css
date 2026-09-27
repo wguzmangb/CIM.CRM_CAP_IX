@@ -1,0 +1,189 @@
+/* Administración de usuarios.
+   Los colores salen de theme.css. Aquí solo va la maqueta. */
+
+.usr-tabla {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    font-size: .8125rem;
+}
+
+.usr-tabla thead th {
+    background: var(--cim-surface-alt);
+    color: var(--cim-muted);
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: .75rem 1.5rem;
+    border-bottom: 1px solid var(--cim-border);
+    white-space: nowrap;
+}
+
+.usr-tabla tbody td {
+    padding: .9rem 1.5rem;
+    border-bottom: 1px solid var(--cim-border);
+    color: var(--cim-text-soft);
+    vertical-align: middle;
+}
+
+.usr-tabla tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.usr-tabla tbody tr:hover {
+    background: var(--cim-surface-alt);
+}
+
+.usr-tabla .acciones {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* La persona con su círculo */
+.usr-persona {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.usr-persona .iniciales {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 50%;
+    background: var(--cim-grad-primary);
+    color: #fff;
+    font-size: .78rem;
+    font-weight: 700;
+    box-shadow: var(--cim-shadow-icon);
+}
+
+.usr-persona.inactiva .iniciales {
+    background: var(--cim-hint);
+    box-shadow: none;
+}
+
+.usr-persona .nombre {
+    display: block;
+    font-weight: 600;
+    color: var(--cim-text);
+}
+
+.usr-persona .correo {
+    display: block;
+    font-size: .78rem;
+    color: var(--cim-muted);
+}
+
+.usr-yo {
+    display: inline-block;
+    font-size: .6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--cim-primary);
+    background: var(--cim-primary-soft);
+    border-radius: 10px;
+    padding: .1rem .45rem;
+    margin-left: .4rem;
+    vertical-align: middle;
+}
+
+/* Etiquetas de rol y estado */
+.pastilla {
+    display: inline-block;
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    border-radius: 10px;
+    padding: .22rem .6rem;
+    color: #fff;
+}
+
+.pastilla.rol-admin   { background: var(--cim-grad-primary); }
+.pastilla.rol-usuario { background: var(--cim-surface-alt); color: var(--cim-muted); }
+.pastilla.activo      { background: var(--cim-grad-success); }
+.pastilla.inactivo    { background: var(--cim-hint); }
+
+/* Selector de rol dentro de la fila */
+.usr-form-rol {
+    display: inline-flex;
+    gap: .35rem;
+    align-items: center;
+}
+
+.usr-form-rol select {
+    border: 1px solid var(--cim-border-input);
+    border-radius: var(--cim-radius);
+    padding: .28rem .55rem;
+    font-size: .75rem;
+    color: var(--cim-text);
+    background: #fff;
+}
+
+.usr-form-rol select:focus {
+    outline: 0;
+    border-color: var(--cim-primary);
+    box-shadow: 0 0 0 3px var(--cim-primary-soft);
+}
+
+.usr-btn {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 600;
+    padding: .3rem .7rem;
+    border-radius: var(--cim-radius);
+    border: 1px solid var(--cim-border-input);
+    background: #fff;
+    color: var(--cim-text-soft);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.usr-btn:hover {
+    border-color: var(--cim-primary);
+    color: var(--cim-primary);
+}
+
+.usr-btn.apagar:hover {
+    border-color: var(--cim-warning);
+    color: var(--cim-warning);
+}
+
+.usr-btn.prender:hover {
+    border-color: var(--cim-success);
+    color: #24a46d;
+}
+
+.usr-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+/* Nota de arriba */
+.usr-nota {
+    display: flex;
+    gap: .85rem;
+    align-items: flex-start;
+    background: rgba(94, 114, 228, .07);
+    border-left: 3px solid var(--cim-primary);
+    border-radius: var(--cim-radius);
+    padding: .9rem 1.15rem;
+    margin-bottom: 1.5rem;
+    font-size: .82rem;
+    color: var(--cim-text-soft);
+}
+
+.usr-nota .ico {
+    color: var(--cim-primary);
+    flex: 0 0 18px;
+}
+
+.usr-nota strong {
+    color: var(--cim-text);
+}

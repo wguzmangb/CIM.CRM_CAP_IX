@@ -1,0 +1,73 @@
+﻿@model CIM.CRM.Models.Contacto
+@{
+    ViewData["Title"] = "Nuevo contacto";
+    ViewData["Titulo"] = "Nuevo contacto";
+    ViewData["Subtitulo"] = "Da de alta una persona dentro de una empresa";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/contactos.css" asp-append-version="true" />
+}
+
+<div class="cim-card">  
+    <div class="cim-card-encabezado">
+        <h2>Datos del contacto</h2>
+        <a class="liga" asp-action="Index">Volver a la lista</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <form asp-action="Create" method="post" class="con-form">
+            <div asp-validation-summary="ModelOnly" class="cim-aviso cim-aviso-error"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="EmpresaId" class="form-label"></label>
+                    <select asp-for="EmpresaId" class="form-select"
+                            asp-items="@(ViewData["Empresas"] as SelectList)">
+                        <option value="">— Escoge la empresa —</option>
+                    </select>
+                    <span asp-validation-for="EmpresaId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Puesto" class="form-label"></label>
+                    <input asp-for="Puesto" class="form-control" />
+                    <span asp-validation-for="Puesto" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Nombre" class="form-label"></label>
+                    <input asp-for="Nombre" class="form-control" autofocus />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Apellidos" class="form-label"></label>
+                    <input asp-for="Apellidos" class="form-control" />
+                    <span asp-validation-for="Apellidos" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Telefono" class="form-label"></label>
+                    <input asp-for="Telefono" class="form-control" />
+                    <span asp-validation-for="Telefono" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="pie-form">
+                <button type="submit" class="cim-btn">Guardar contacto</button>
+                <a asp-action="Index" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

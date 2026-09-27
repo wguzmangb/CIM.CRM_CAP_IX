@@ -1,0 +1,134 @@
+@model CIM.CRM.Models.Prospecto
+@{
+    ViewData["Title"] = Model.Nombre;
+    ViewData["Titulo"] = Model.Nombre;
+    ViewData["Subtitulo"] = "Ficha del prospecto";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/prospectos.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>Datos generales</h2>
+        <div class="d-flex gap-2 align-items-center">
+            @if (Model.FechaConversion == null)
+            {
+                <form asp-action="Convertir" asp-route-id="@Model.ProspectoId" method="post"
+                      onsubmit="return confirm('¿Convertir a @Model.Nombre en empresa y contacto?');">
+                    <button type="submit" class="btn-convertir">Convertir</button>
+                </form>
+            }
+            <a class="btn-mini" asp-action="Edit" asp-route-id="@Model.ProspectoId">Editar</a>
+            <a class="liga" asp-action="Index">Volver a la lista</a>
+        </div>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <div class="ficha">
+            <div class="campo">
+                <span class="etiqueta">Estado</span>
+                <span class="valor">
+                    <span class="etiqueta-estado es-@(Model.Estado.ToLower().Replace(" ", "-"))">@Model.Estado</span>
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.NombreEmpresa)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.NombreEmpresa) ? "vacio" : "")">
+                    @(string.IsNullOrWhiteSpace(Model.NombreEmpresa) ? "-" : Model.NombreEmpresa)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Telefono)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.Telefono) ? "vacio" : "")">
+                    @if (string.IsNullOrWhiteSpace(Model.Telefono))
+                    {
+                        <text>-</text>
+                    }
+                    else
+                    {
+                        <a href="tel:@Model.Telefono">@Model.Telefono</a>
+                    }
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Email)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.Email) ? "vacio" : "")">
+                    @if (string.IsNullOrWhiteSpace(Model.Email))
+                    {
+                        <text>-</text>
+                    }
+                    else
+                    {
+                        <a href="mailto:@Model.Email">@Model.Email</a>
+                    }
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Origen)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.Origen) ? "vacio" : "")">
+                    @(string.IsNullOrWhiteSpace(Model.Origen) ? "-" : Model.Origen)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.UsuarioId)</span>
+                <span class="valor @(Model.Usuario == null ? "vacio" : "")">
+                    @(Model.Usuario == null
+                        ? "Sin asignar"
+                        : $"{Model.Usuario.Nombre} {Model.Usuario.Apellidos}".Trim())
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.FechaRegistro)</span>
+                <span class="valor">@Model.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+        </div>
+
+        @if (Model.FechaConversion != null)
+        {
+            <div class="ficha" style="margin-top:1.5rem">
+                <div class="campo">
+                    <span class="etiqueta">Empresa creada</span>
+                    <span class="valor @(Model.Empresa == null ? "vacio" : "")">
+                        @if (Model.Empresa != null)
+                        {
+                            <a asp-controller="Empresas" asp-action="Details"
+                               asp-route-id="@Model.EmpresaId">@Model.Empresa.Nombre</a>
+                        }
+                        else
+                        {
+                            <text>-</text>
+                        }
+                    </span>
+                </div>
+
+                <div class="campo">
+                    <span class="etiqueta">Contacto creado</span>
+                    <span class="valor @(Model.Contacto == null ? "vacio" : "")">
+                        @if (Model.Contacto != null)
+                        {
+                            <a asp-controller="Contactos" asp-action="Details"
+                               asp-route-id="@Model.ContactoId">@($"{Model.Contacto.Nombre} {Model.Contacto.Apellidos}".Trim())</a>
+                        }
+                        else
+                        {
+                            <text>-</text>
+                        }
+                    </span>
+                </div>
+
+                <div class="campo">
+                    <span class="etiqueta">@Html.DisplayNameFor(m => m.FechaConversion)</span>
+                    <span class="valor">@Model.FechaConversion.Value.ToString("dd/MM/yyyy")</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>

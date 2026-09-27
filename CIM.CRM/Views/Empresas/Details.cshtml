@@ -1,0 +1,141 @@
+@model CIM.CRM.Models.Empresa
+@{
+    ViewData["Title"] = Model.Nombre;
+    ViewData["Titulo"] = Model.Nombre;
+    ViewData["Subtitulo"] = "Ficha de la empresa";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/empresas.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>Datos generales</h2>
+        <div class="d-flex gap-2 align-items-center">
+            <a class="btn-mini" asp-action="Edit" asp-route-id="@Model.EmpresaId">Editar</a>
+            <a class="liga" asp-action="Index">Volver a la lista</a>
+        </div>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <div class="ficha">
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.RFC)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.RFC) ? "vacio" : "")">
+                    @(string.IsNullOrWhiteSpace(Model.RFC) ? "—" : Model.RFC)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Telefono)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.Telefono) ? "vacio" : "")">
+                    @(string.IsNullOrWhiteSpace(Model.Telefono) ? "—" : Model.Telefono)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Email)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.Email) ? "vacio" : "")">
+                    @if (string.IsNullOrWhiteSpace(Model.Email))
+                    {
+                        <text>—</text>
+                    }
+                    else
+                    {
+                        <a href="mailto:@Model.Email">@Model.Email</a>
+                    }
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.SitioWeb)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.SitioWeb) ? "vacio" : "")">
+                    @if (string.IsNullOrWhiteSpace(Model.SitioWeb))
+                    {
+                        <text>—</text>
+                    }
+                    else
+                    {
+                        <a href="@Model.SitioWeb" target="_blank" rel="noopener">@Model.SitioWeb</a>
+                    }
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Direccion)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.Direccion) ? "vacio" : "")">
+                    @(string.IsNullOrWhiteSpace(Model.Direccion) ? "—" : Model.Direccion)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Usuario)</span>
+                <span class="valor @(Model.Usuario == null ? "vacio" : "")">
+                    @if (Model.Usuario != null)
+                    {
+                        @($"{Model.Usuario.Nombre} {Model.Usuario.Apellidos}".Trim())
+                    }
+                    else
+                    {
+                        <text>Sin asignar</text>
+                    }
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.FechaRegistro)</span>
+                <span class="valor">@Model.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>Contactos</h2>
+        <a class="cim-btn" asp-controller="Contactos" asp-action="Create"
+           asp-route-empresaId="@Model.EmpresaId">Nuevo contacto</a>
+    </div>
+
+    @if (!Model.Contactos.Any())
+    {
+        <div class="cim-vacio">Esta empresa todavía no tiene contactos.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="tabla-cim">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Puesto</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th class="acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var contacto in Model.Contactos.OrderBy(c => c.Nombre))
+                {
+                    <tr>
+                        <td>
+                            <a class="principal" asp-controller="Contactos" asp-action="Details"
+                               asp-route-id="@contacto.ContactoId">
+                                @($"{contacto.Nombre} {contacto.Apellidos}".Trim())
+                            </a>
+                        </td>
+                        <td>@(string.IsNullOrWhiteSpace(contacto.Puesto) ? "—" : contacto.Puesto)</td>
+                        <td>@(string.IsNullOrWhiteSpace(contacto.Telefono) ? "—" : contacto.Telefono)</td>
+                        <td>@(string.IsNullOrWhiteSpace(contacto.Email) ? "—" : contacto.Email)</td>
+                        <td class="acciones">
+                            <a class="btn-mini" asp-controller="Contactos" asp-action="Edit"
+                               asp-route-id="@contacto.ContactoId">Editar</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

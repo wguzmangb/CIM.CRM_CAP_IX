@@ -1,0 +1,106 @@
+@model IEnumerable<CIM.CRM.Models.UsuarioListaViewModel>
+@using CIM.CRM.Data
+@{
+    ViewData["Title"] = "Administración";
+    ViewData["Titulo"] = "Administración";
+    ViewData["Subtitulo"] = "Quién entra al sistema y con qué permisos";
+    var totalAdmins = (int)(ViewData["TotalAdmins"] ?? 0);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/usuarios.css" asp-append-version="true" />
+}
+
+<div class="usr-nota">
+    <span class="ico">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 10.5h-1.5V7h1.5v4.5Zm0-6h-1.5V4h1.5v1.5Z"/></svg>
+    </span>
+    <div>
+        <strong>Administrador</strong> entra a esta pantalla y da de alta gente.
+        <strong>Usuario</strong> trabaja la cartera —&nbsp;empresas, contactos, prospectos,
+        oportunidades— pero no ve Administración.
+        Un usuario <strong>desactivado</strong> conserva su información pero ya no puede entrar.
+    </div>
+</div>
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>Usuarios del sistema</h2>
+        <a class="cim-btn" asp-area="Identity" asp-page="/Account/Register">Nuevo usuario</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="usr-tabla">
+            <thead>
+                <tr>
+                    <th>Persona</th>
+                    <th>Puesto</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Alta</th>
+                    <th class="acciones">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var usuario in Model)
+            {
+                var esUltimoAdmin = usuario.Rol == SembrarDatos.RolAdmin && totalAdmins <= 1;
+                <tr>
+                    <td>
+                        <div class="usr-persona @(usuario.Activo ? "" : "inactiva")">
+                            <span class="iniciales">@usuario.Iniciales</span>
+                            <span>
+                                <span class="nombre">
+                                    @usuario.NombreCompleto
+                                    @if (usuario.EsUnoMismo)
+                                    {
+                                        <span class="usr-yo">tú</span>
+                                    }
+                                </span>
+                                <span class="correo">@usuario.Email</span>
+                            </span>
+                        </div>
+                    </td>
+
+                    <td>@(string.IsNullOrWhiteSpace(usuario.Puesto) ? "—" : usuario.Puesto)</td>
+
+                    <td>
+                        <span class="pastilla @(usuario.Rol == SembrarDatos.RolAdmin ? "rol-admin" : "rol-usuario")">
+                            @usuario.Rol
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="pastilla @(usuario.Activo ? "activo" : "inactivo")">
+                            @(usuario.Activo ? "Activo" : "Inactivo")
+                        </span>
+                    </td>
+
+                    <td>@usuario.FechaRegistro.ToString("dd/MM/yyyy")</td>
+
+                    <td class="acciones">
+                        <form asp-action="CambiarRol" method="post" class="usr-form-rol d-inline">
+                            <input type="hidden" name="id" value="@usuario.Id" />
+                            <select name="rol" onchange="this.form.submit()" @(esUltimoAdmin ? "disabled" : "")>
+                                @foreach (var rol in SembrarDatos.Roles)
+                                {
+                                    <option value="@rol" selected="@(rol == usuario.Rol)">@rol</option>
+                                }
+                            </select>
+                        </form>
+
+                        <form asp-action="CambiarEstado" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@usuario.Id" />
+                            <button type="submit"
+                                    class="usr-btn @(usuario.Activo ? "apagar" : "prender")"
+                                    @(usuario.EsUnoMismo || (usuario.Activo && esUltimoAdmin) ? "disabled" : "")>
+                                @(usuario.Activo ? "Desactivar" : "Reactivar")
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

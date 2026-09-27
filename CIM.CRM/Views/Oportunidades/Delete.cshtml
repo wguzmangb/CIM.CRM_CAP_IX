@@ -1,0 +1,78 @@
+﻿@model CIM.CRM.Models.Oportunidad
+@{
+    ViewData["Title"] = "Eliminar oportunidad";
+    ViewData["Titulo"] = Model.Nombre;
+    ViewData["Subtitulo"] = "Confirmar la eliminación";
+    var cultura = new System.Globalization.CultureInfo("es-MX");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/oportunidades.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>¿Eliminar esta oportunidad?</h2>
+        <a class="liga" asp-action="Index">Volver a la lista</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <div class="aviso-borrar">
+            <span class="ico">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 0 15h16L8 1Zm0 5v4.5h1.2V6H8Zm.6 6.2a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Z"/></svg>
+            </span>
+            <div>
+                Esta acción no se puede deshacer.
+                Si la oportunidad tiene cotizaciones o actividades ligadas,
+                el sistema no la va a dejar borrar.
+                Si la venta no se hizo, conviene cerrarla como
+                <strong>Perdida</strong> y anotar el motivo, en lugar de borrarla.
+            </div>
+        </div>
+
+        <div class="ficha">
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Nombre)</span>
+                <span class="valor">@Model.Nombre</span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.EmpresaId)</span>
+                <span class="valor @(Model.Empresa == null ? "vacio" : "")">
+                    @(Model.Empresa == null ? "-" : Model.Empresa.Nombre)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">Etapa</span>
+                <span class="valor">
+                    <span class="etiqueta-etapa et-@(Model.Etapa.ToLower().Replace("ó", "o"))">@Model.Etapa</span>
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Importe)</span>
+                <span class="valor @(Model.Importe == null ? "vacio" : "")">
+                    @(Model.Importe == null ? "-" : Model.Importe.Value.ToString("C0", cultura))
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.UsuarioId)</span>
+                <span class="valor @(Model.Usuario == null ? "vacio" : "")">
+                    @(Model.Usuario == null
+                        ? "Sin asignar"
+                        : $"{Model.Usuario.Nombre} {Model.Usuario.Apellidos}".Trim())
+                </span>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="opo-form">
+            <input type="hidden" asp-for="OportunidadId" />
+            <div class="pie-form">
+                <button type="submit" class="btn-peligro">Sí, eliminar</button>
+                <a asp-action="Index" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

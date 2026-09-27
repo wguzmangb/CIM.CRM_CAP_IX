@@ -1,0 +1,73 @@
+@model CIM.CRM.Models.Empresa
+@{
+    ViewData["Title"] = "Eliminar empresa";
+    ViewData["Titulo"] = Model.Nombre;
+    ViewData["Subtitulo"] = "Confirmar la eliminación";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/empresas.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>¿Eliminar esta empresa?</h2>
+        <a class="liga" asp-action="Index">Volver a la lista</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <div class="aviso-borrar">
+            <span class="ico">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 0 15h16L8 1Zm0 5v4.5h1.2V6H8Zm.6 6.2a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Z"/></svg>
+            </span>
+            <div>
+                Esta acción no se puede deshacer.
+                Si la empresa tiene contactos, oportunidades o actividades registradas,
+                el sistema no la va a dejar borrar — primero hay que quitar lo que cuelga de ella.
+            </div>
+        </div>
+
+        <div class="ficha">
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Nombre)</span>
+                <span class="valor">@Model.Nombre</span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.RFC)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.RFC) ? "vacio" : "")">
+                    @(string.IsNullOrWhiteSpace(Model.RFC) ? "—" : Model.RFC)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Telefono)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.Telefono) ? "vacio" : "")">
+                    @(string.IsNullOrWhiteSpace(Model.Telefono) ? "—" : Model.Telefono)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Usuario)</span>
+                <span class="valor @(Model.Usuario == null ? "vacio" : "")">
+                    @if (Model.Usuario != null)
+                    {
+                        @($"{Model.Usuario.Nombre} {Model.Usuario.Apellidos}".Trim())
+                    }
+                    else
+                    {
+                        <text>Sin asignar</text>
+                    }
+                </span>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="emp-form">
+            <input type="hidden" asp-for="EmpresaId" />
+            <div class="pie-form">
+                <button type="submit" class="btn-peligro">Sí, eliminar</button>
+                <a asp-action="Index" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

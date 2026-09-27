@@ -1,0 +1,118 @@
+﻿@model IEnumerable<CIM.CRM.Models.Prospecto>
+@{
+    ViewData["Title"] = "Prospectos";
+    ViewData["Titulo"] = "Prospectos";
+    ViewData["Subtitulo"] = "Los interesados que todavía no son clientes";
+    var buscar = ViewData["Buscar"] as string;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/prospectos.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <form asp-action="Index" method="get" class="pro-buscador">
+            <input type="text" name="buscar" value="@buscar" placeholder="Buscar por nombre, empresa, correo o teléfono" />
+            <button type="submit" class="btn-mini">Buscar</button>
+            @if (!string.IsNullOrWhiteSpace(buscar))
+            {
+                <a asp-action="Index" class="liga-limpiar">Limpiar</a>
+            }
+        </form>
+
+        <a asp-action="Create" class="cim-btn">Nuevo prospecto</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="cim-vacio">
+            @if (string.IsNullOrWhiteSpace(buscar))
+            {
+                <text>Todavía no hay prospectos registrados.</text>
+            }
+            else
+            {
+                <text>Ningún prospecto coincide con «@buscar».</text>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="tabla-cim">
+                <thead>
+                    <tr>
+                        <th>Prospecto</th>
+                        <th>Empresa</th>
+                        <th>Estado</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th class="acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var prospecto in Model)
+                {
+                    var palabras = (prospecto.Nombre ?? "")
+                        .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    var ini = palabras.Length == 0
+                        ? "?"
+                        : (palabras[0][0].ToString()
+                          + (palabras.Length > 1 ? palabras[1][0].ToString() : "")).ToUpper();
+                    var claseEstado = "es-" + prospecto.Estado.ToLower().Replace(" ", "-");
+                    <tr>
+                        <td>
+                            <span class="persona">
+                                <span class="iniciales">@ini</span>
+                                <a class="principal" asp-action="Details" asp-route-id="@prospecto.ProspectoId">
+                                    @prospecto.Nombre
+                                </a>
+                            </span>
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(prospecto.NombreEmpresa))
+                            {
+                                <span class="sin-dato">-</span>
+                            }
+                            else
+                            {
+                                @prospecto.NombreEmpresa
+                            }
+                        </td>
+                        <td>
+                            <span class="etiqueta-estado @claseEstado">@prospecto.Estado</span>
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(prospecto.Telefono))
+                            {
+                                <span class="sin-dato">-</span>
+                            }
+                            else
+                            {
+                                @prospecto.Telefono
+                            }
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(prospecto.Email))
+                            {
+                                <span class="sin-dato">-</span>
+                            }
+                            else
+                            {
+                                @prospecto.Email
+                            }
+                        </td>
+                        <td class="acciones">
+                            <a class="btn-mini" asp-action="Edit" asp-route-id="@prospecto.ProspectoId">Editar</a>
+                            <a class="btn-mini peligro" asp-action="Delete" asp-route-id="@prospecto.ProspectoId">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pie-conteo">@Model.Count() prospecto(s).</div>
+    }
+</div>

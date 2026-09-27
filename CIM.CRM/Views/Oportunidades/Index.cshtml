@@ -1,0 +1,110 @@
+﻿@model IEnumerable<CIM.CRM.Models.Oportunidad>
+@{
+    ViewData["Title"] = "Oportunidades";
+    ViewData["Titulo"] = "Oportunidades";
+    ViewData["Subtitulo"] = "Las ventas que están en trámite";
+    var buscar = ViewData["Buscar"] as string;
+    var cultura = new System.Globalization.CultureInfo("es-MX");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/oportunidades.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <form asp-action="Index" method="get" class="opo-buscador">
+            <input type="text" name="buscar" value="@buscar" placeholder="Buscar por oportunidad, empresa o etapa" />
+            <button type="submit" class="btn-mini">Buscar</button>
+            @if (!string.IsNullOrWhiteSpace(buscar))
+            {
+                <a asp-action="Index" class="liga-limpiar">Limpiar</a>
+            }
+        </form>
+
+        <a asp-action="Create" class="cim-btn">Nueva oportunidad</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="cim-vacio">
+            @if (string.IsNullOrWhiteSpace(buscar))
+            {
+                <text>Todavía no hay oportunidades registradas.</text>
+            }
+            else
+            {
+                <text>Ninguna oportunidad coincide con «@buscar».</text>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="tabla-cim">
+                <thead>
+                    <tr>
+                        <th>Oportunidad</th>
+                        <th>Empresa</th>
+                        <th>Etapa</th>
+                        <th class="monto">Importe</th>
+                        <th>Cierre estimado</th>
+                        <th class="acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var oportunidad in Model)
+                {
+                    var claseEtapa = "et-" + oportunidad.Etapa.ToLower().Replace("ó", "o");
+                    <tr>
+                        <td>
+                            <a class="principal" asp-action="Details" asp-route-id="@oportunidad.OportunidadId">
+                                @oportunidad.Nombre
+                            </a>
+                        </td>
+                        <td>
+                            @if (oportunidad.Empresa == null)
+                            {
+                                <span class="sin-dato">-</span>
+                            }
+                            else
+                            {
+                                @oportunidad.Empresa.Nombre
+                            }
+                        </td>
+                        <td>
+                            <span class="etiqueta-etapa @claseEtapa">@oportunidad.Etapa</span>
+                        </td>
+                        <td class="monto">
+                            @if (oportunidad.Importe == null)
+                            {
+                                <span class="sin-dato">-</span>
+                            }
+                            else
+                            {
+                                @oportunidad.Importe.Value.ToString("C0", cultura)
+                            }
+                        </td>
+                        <td>
+                            @if (oportunidad.FechaEstimadaCierre == null)
+                            {
+                                <span class="sin-dato">-</span>
+                            }
+                            else
+                            {
+                                @oportunidad.FechaEstimadaCierre.Value.ToString("dd/MM/yyyy")
+                            }
+                        </td>
+                        <td class="acciones">
+                            <a class="btn-mini" asp-action="Edit" asp-route-id="@oportunidad.OportunidadId">Editar</a>
+                            <a class="btn-mini peligro" asp-action="Delete" asp-route-id="@oportunidad.OportunidadId">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pie-conteo">@Model.Count() oportunidad(es).</div>
+    }
+</div>

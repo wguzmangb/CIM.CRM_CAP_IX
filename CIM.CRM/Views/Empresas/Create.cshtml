@@ -1,0 +1,82 @@
+@model CIM.CRM.Models.Empresa
+@{
+    ViewData["Title"] = "Nueva empresa";
+    ViewData["Titulo"] = "Nueva empresa";
+    ViewData["Subtitulo"] = "Da de alta una cuenta en la cartera";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/empresas.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>Datos de la empresa</h2>
+        <a class="liga" asp-action="Index">Volver a la lista</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <form asp-action="Create" method="post" class="emp-form">
+            <div asp-validation-summary="ModelOnly" class="cim-aviso cim-aviso-error"></div>
+
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label asp-for="Nombre" class="form-label"></label>
+                    <input asp-for="Nombre" class="form-control" autofocus />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="RFC" class="form-label"></label>
+                    <input asp-for="RFC" class="form-control" />
+                    <span asp-validation-for="RFC" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Telefono" class="form-label"></label>
+                    <input asp-for="Telefono" class="form-control" />
+                    <span asp-validation-for="Telefono" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Direccion" class="form-label"></label>
+                    <input asp-for="Direccion" class="form-control" />
+                    <span asp-validation-for="Direccion" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="SitioWeb" class="form-label"></label>
+                    <input asp-for="SitioWeb" class="form-control" placeholder="https://" />
+                    <span asp-validation-for="SitioWeb" class="text-danger small"></span>
+                </div>
+
+                @if ((bool?)ViewData["PuedeAsignar"] == true)
+                {
+                    <div class="col-md-4">
+                        <label asp-for="UsuarioId" class="form-label"></label>
+                        <select asp-for="UsuarioId" class="form-select"
+                                asp-items="@(ViewData["Ejecutivos"] as SelectList)">
+                            <option value="">— Sin asignar —</option>
+                        </select>
+                        <span asp-validation-for="UsuarioId" class="text-danger small"></span>
+                    </div>
+                }
+            </div>
+
+            <div class="pie-form">
+                <button type="submit" class="cim-btn">Guardar empresa</button>
+                <a asp-action="Index" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

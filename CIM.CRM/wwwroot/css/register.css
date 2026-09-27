@@ -1,0 +1,99 @@
+/* Alta de usuarios — /Identity/Account/Register
+   Es una pantalla de adentro: va con el marco del sistema.
+   Los colores salen de theme.css. */
+
+.reg-card {
+    max-width: 780px;
+}
+
+.reg-section {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--cim-primary);
+    margin: 1.75rem 0 1rem;
+    padding-bottom: .45rem;
+    border-bottom: 1px solid var(--cim-border);
+}
+
+.reg-section:first-of-type {
+    margin-top: 0;
+}
+
+.reg-form .form-label {
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--cim-muted);
+    margin-bottom: .4rem;
+}
+
+.reg-form .form-control {
+    border: 1px solid var(--cim-border-input);
+    border-radius: var(--cim-radius);
+    padding: .6rem .85rem;
+    font-size: .875rem;
+    color: var(--cim-text);
+}
+
+.reg-form .form-control:focus {
+    border-color: var(--cim-primary);
+    box-shadow: 0 0 0 3px var(--cim-primary-soft);
+}
+
+.reg-hint {
+    display: block;
+    font-size: .78rem;
+    color: var(--cim-hint);
+    margin-top: .35rem;
+}
+
+.reg-permiso {
+    background: var(--cim-surface-alt);
+    border-radius: var(--cim-radius);
+    padding: 1rem 1.15rem;
+}
+
+.reg-permiso .form-select {
+    border: 1px solid var(--cim-border-input);
+    border-radius: var(--cim-radius);
+    padding: .6rem .85rem;
+    font-size: .875rem;
+    color: var(--cim-text);
+    max-width: 420px;
+}
+
+.reg-permiso .form-select:focus {
+    border-color: var(--cim-primary);
+    box-shadow: 0 0 0 3px var(--cim-primary-soft);
+}
+
+.reg-permiso .reg-hint {
+    margin-top: .6rem;
+}
+
+.reg-permiso strong {
+    color: var(--cim-text-soft);
+}
+
+.reg-form .pie-form {
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--cim-border);
+}
+
+.reg-form .liga-cancelar {
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--cim-muted);
+    text-decoration: none;
+}
+
+.reg-form .liga-cancelar:hover {
+    color: var(--cim-text);
+}

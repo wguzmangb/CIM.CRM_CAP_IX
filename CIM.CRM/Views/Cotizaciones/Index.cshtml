@@ -1,0 +1,103 @@
+﻿@model IEnumerable<CIM.CRM.Models.Cotizacion>
+@{
+    ViewData["Title"] = "Cotizaciones";
+    ViewData["Titulo"] = "Cotizaciones";
+    ViewData["Subtitulo"] = "Los precios que se le han mandado a los clientes";
+    var buscar = ViewData["Buscar"] as string;
+    var cultura = new System.Globalization.CultureInfo("es-MX");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cotizaciones.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <form asp-action="Index" method="get" class="cot-buscador">
+            <input type="text" name="buscar" value="@buscar" placeholder="Buscar por folio, venta, empresa o estado" />
+            <button type="submit" class="btn-mini">Buscar</button>
+            @if (!string.IsNullOrWhiteSpace(buscar))
+            {
+                <a asp-action="Index" class="liga-limpiar">Limpiar</a>
+            }
+        </form>
+
+        <a asp-action="Create" class="cim-btn">Nueva cotización</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="cim-vacio">
+            @if (string.IsNullOrWhiteSpace(buscar))
+            {
+                <text>Todavía no hay cotizaciones registradas.</text>
+            }
+            else
+            {
+                <text>Ninguna cotización coincide con «@buscar».</text>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="tabla-cim">
+                <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Empresa</th>
+                        <th>Fecha</th>
+                        <th class="monto">Total</th>
+                        <th>Estado</th>
+                        <th class="acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var cotizacion in Model)
+                {
+                    var claseEstado = "es-" + cotizacion.Estado.ToLower()
+                        .Replace("ó", "o").Replace(" ", "-");
+                    <tr>
+                        <td>
+                            <a class="cot-folio" asp-action="Details" asp-route-id="@cotizacion.CotizacionId">
+                                @cotizacion.Folio
+                            </a>
+                            <span class="cot-venta">
+                                @if (cotizacion.Oportunidad == null)
+                                {
+                                    <text>-</text>
+                                }
+                                else
+                                {
+                                    @cotizacion.Oportunidad.Nombre
+                                }
+                            </span>
+                        </td>
+                        <td>
+                            @if (cotizacion.Oportunidad?.Empresa == null)
+                            {
+                                <span class="sin-dato">-</span>
+                            }
+                            else
+                            {
+                                @cotizacion.Oportunidad.Empresa.Nombre
+                            }
+                        </td>
+                        <td>@cotizacion.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td class="monto">@cotizacion.Total.ToString("C2", cultura)</td>
+                        <td>
+                            <span class="etiqueta-estado @claseEstado">@cotizacion.Estado</span>
+                        </td>
+                        <td class="acciones">
+                            <a class="btn-mini" asp-action="Edit" asp-route-id="@cotizacion.CotizacionId">Editar</a>
+                            <a class="btn-mini peligro" asp-action="Delete" asp-route-id="@cotizacion.CotizacionId">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pie-conteo">@Model.Count() cotización(es).</div>
+    }
+</div>

@@ -1,0 +1,240 @@
+@using Microsoft.AspNetCore.Identity
+@using CIM.CRM.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var controlador = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+
+    string Activo(string nombre) => controlador == nombre ? "activo" : "";
+
+    var usuario = SignInManager.IsSignedIn(User) ? await UserManager.GetUserAsync(User) : null;
+    var nombreCorto = usuario?.Nombre ?? usuario?.Email ?? "";
+    var iniciales = string.IsNullOrWhiteSpace(usuario?.Nombre)
+        ? (usuario?.Email?.Substring(0, 1).ToUpper() ?? "?")
+        : $"{usuario.Nombre[0]}{(string.IsNullOrWhiteSpace(usuario.Apellidos) ? "" : usuario.Apellidos[0].ToString())}".ToUpper();
+
+    var titulo = ViewData["Titulo"] as string ?? ViewData["Title"] as string ?? "CIM.CRM";
+    var subtitulo = ViewData["Subtitulo"] as string;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CIM.CRM</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+    <script>
+        
+        if (localStorage.getItem('cimMenu') === 'plegado') {
+            document.documentElement.classList.add('pre-plegada');
+        }
+    </script>
+    <style>
+        html.pre-plegada .cim-sidebar { width: 78px; }
+        html.pre-plegada .cim-main { margin-left: 78px; }
+    </style>
+</head>
+<body class="cim-app">
+
+    <div class="cim-velo" id="cimVelo" onclick="cimCerrarMovil()"></div>
+
+    <aside class="cim-sidebar" id="cimSidebar">
+        <a class="cim-marca" asp-controller="Home" asp-action="Index">
+            <span class="cim-logo">CIM</span>
+            <span class="cim-nombre">CIM.CRM</span>
+        </a>
+
+        <ul class="cim-nav">
+            <li>
+                <a class="@Activo("Home")" data-nombre="Inicio" asp-controller="Home" asp-action="Index">
+                    <span class="ico c-primary">
+                        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5 1 7v7.5h4.5V10h5v4.5H15V7L8 1.5Z"/></svg>
+                    </span>
+                    <span class="texto">Inicio</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="cim-nav-titulo">Cartera</div>
+        <ul class="cim-nav">
+            <li>
+                <a class="@Activo("Empresas")" data-nombre="Empresas" asp-controller="Empresas" asp-action="Index">
+                    <span class="ico c-info">
+                        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 15V2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3h3a1 1 0 0 1 1 1v9H2Zm2-2h2v-2H4v2Zm0-4h2V7H4v2Zm0-4h2V3H4v2Zm4 8h2v-2H8v2Zm0-4h2V7H8v2Zm0-4h2V3H8v2Zm4 8h2v-2h-2v2Zm0-4h2V7h-2v2Z"/></svg>
+                    </span>
+                    <span class="texto">Empresas</span>
+                </a>
+            </li>
+            <li>
+                <a class="@Activo("Contactos")" data-nombre="Contactos"
+                   asp-controller="Contactos" asp-action="Index">
+                    <span class="ico c-success">
+                        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0 1.5c-3 0-6 1.5-6 3.5V15h12v-2c0-2-3-3.5-6-3.5Z" /></svg>
+                    </span>
+                    <span class="texto">Contactos</span>
+                </a>
+            </li>
+            <li>
+            
+                <a class="@Activo("Prospectos")" data-nombre="Prospectos"
+                   asp-controller="Prospectos" asp-action="Index">
+                    <span class="ico c-warning">
+                        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2h14l-5.5 6.5V15L6.5 13V8.5L1 2Z" /></svg>
+                    </span>
+                    <span class="texto">Prospectos</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="cim-nav-titulo">Ventas</div>
+        <ul class="cim-nav">
+            <li>
+                <a class="@Activo("Oportunidades")" data-nombre="Oportunidades"
+                   asp-controller="Oportunidades" asp-action="Index">
+                    <span class="ico c-danger">
+                        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 13h3V8H1v5Zm5.5 0h3V3h-3v10ZM12 13h3V6h-3v7Z" /></svg>
+                    </span>
+                    <span class="texto">Oportunidades</span>
+                </a>
+            </li>
+            <li>
+                <a class="@Activo("Cotizaciones")" data-nombre="Cotizaciones"
+                   asp-controller="Cotizaciones" asp-action="Index">
+                    <span class="ico c-violeta">
+                        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 1h7l3 3v11H3V1Zm2 5h6V5H5v1Zm0 3h6V8H5v1Zm0 3h4v-1H5v1Z" /></svg>
+                    </span>
+                    <span class="texto">Cotizaciones</span>
+                </a>
+            </li>
+            <li>
+                <a class="proximo" data-nombre="Actividades">
+                    <span class="ico c-info">
+                        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 3.5v3.75l3 1.75-.75 1.25-3.75-2.2V4.5h1.5Z"/></svg>
+                    </span>
+                    <span class="texto">Actividades</span>
+                    <span class="etiqueta-pronto">pronto</span>
+                </a>
+            </li>
+        </ul>
+
+        @if (User.IsInRole("Administrador"))
+        {
+            <div class="cim-nav-titulo">Administración</div>
+            <ul class="cim-nav">
+                <li>
+                    <a class="@Activo("Usuarios")" data-nombre="Administración"
+                       asp-controller="Usuarios" asp-action="Index">
+                        <span class="ico c-success">
+                            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0 1.5c-2.6 0-5 1.3-5 3V15h10v-1.5c0-1.7-2.4-3-5-3ZM12.5 5v2h-2v1.5h2v2H14v-2h2V7h-2V5h-1.5Z"/></svg>
+                        </span>
+                        <span class="texto">Administración</span>
+                    </a>
+                </li>
+            </ul>
+        }
+    </aside>
+
+    <div class="cim-main">
+        <div class="cim-header">
+            <div class="cim-topbar">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="cim-plegar" type="button" onclick="cimAlternarMenu()" aria-label="Plegar el menú">
+                        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M10.5 2 4 8l6.5 6 1.4-1.4L6.8 8l5.1-4.6L10.5 2Z"/></svg>
+                    </button>
+                    <span class="cim-seccion">@titulo</span>
+                </div>
+
+                @if (usuario != null)
+                {
+                    <div class="cim-usuario dropdown">
+                        <button class="cim-btn-usuario" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="cim-avatar">@iniciales</span>
+                            <span class="d-none d-sm-inline">@nombreCorto</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Mi cuenta</a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <form asp-area="Identity" asp-page="/Account/Logout"
+                                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="dropdown-item">Salir</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="cim-invitado">
+                        <a asp-area="Identity" asp-page="/Account/Login">Entrar</a>
+                    </div>
+                }
+            </div>
+
+            <div class="cim-header-texto">
+                <h1>@titulo</h1>
+                @if (!string.IsNullOrWhiteSpace(subtitulo))
+                {
+                    <p>@subtitulo</p>
+                }
+            </div>
+        </div>
+
+        <div class="cim-contenido">
+            @if (TempData["Mensaje"] != null)
+            {
+                <div class="cim-aviso cim-aviso-ok alert-dismissible fade show" role="alert">
+                    @TempData["Mensaje"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="cim-aviso cim-aviso-error alert-dismissible fade show" role="alert">
+                    @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Pasa el estado que se aplicó antes de pintar al <body>, que es quien manda
+        (function () {
+            if (document.documentElement.classList.contains('pre-plegada')) {
+                document.body.classList.add('cim-plegada');
+                document.documentElement.classList.remove('pre-plegada');
+            }
+        })();
+
+        function cimEsAngosta() {
+            return window.matchMedia('(max-width: 991.98px)').matches;
+        }
+
+        function cimAlternarMenu() {
+            if (cimEsAngosta()) {
+                var abierta = document.getElementById('cimSidebar').classList.toggle('abierta');
+                document.getElementById('cimVelo').classList.toggle('visible', abierta);
+                return;
+            }
+            var plegada = document.body.classList.toggle('cim-plegada');
+            localStorage.setItem('cimMenu', plegada ? 'plegado' : 'abierto');
+        }
+
+        function cimCerrarMovil() {
+            document.getElementById('cimSidebar').classList.remove('abierta');
+            document.getElementById('cimVelo').classList.remove('visible');
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

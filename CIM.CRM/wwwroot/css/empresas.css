@@ -1,0 +1,260 @@
+/* Pantallas de Empresas.
+   Los colores salen de theme.css. Aquí solo va la maqueta. */
+
+/* ── Buscador ────────────────────────────────────────────── */
+
+.emp-buscador {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
+.emp-buscador input {
+    border: 1px solid var(--cim-border-input);
+    border-radius: var(--cim-radius);
+    padding: .45rem .85rem;
+    font-size: .8125rem;
+    min-width: 240px;
+}
+
+.emp-buscador input:focus {
+    outline: 0;
+    border-color: var(--cim-primary);
+    box-shadow: 0 0 0 3px var(--cim-primary-soft);
+}
+
+.emp-buscador .liga-limpiar {
+    font-size: .8rem;
+    color: var(--cim-muted);
+    text-decoration: none;
+}
+
+.emp-buscador .liga-limpiar:hover {
+    color: var(--cim-primary);
+}
+
+/* ── Tabla ───────────────────────────────────────────────── */
+
+.tabla-cim {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    font-size: .8125rem;
+}
+
+.tabla-cim thead th {
+    background: var(--cim-surface-alt);
+    color: var(--cim-muted);
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: .75rem 1.5rem;
+    border-bottom: 1px solid var(--cim-border);
+    white-space: nowrap;
+}
+
+.tabla-cim tbody td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--cim-border);
+    color: var(--cim-text-soft);
+    vertical-align: middle;
+}
+
+.tabla-cim tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.tabla-cim tbody tr:hover {
+    background: var(--cim-surface-alt);
+}
+
+.tabla-cim .principal {
+    font-weight: 600;
+    color: var(--cim-text);
+    text-decoration: none;
+}
+
+.tabla-cim .principal:hover {
+    color: var(--cim-primary);
+}
+
+.tabla-cim .sin-dato {
+    color: var(--cim-hint);
+}
+
+.tabla-cim .acciones {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.tabla-cim .pie-conteo {
+    padding: .85rem 1.5rem;
+    font-size: .8rem;
+    color: var(--cim-muted);
+}
+
+/* Persona con iniciales */
+.persona {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+}
+
+.persona .iniciales {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--cim-grad-primary);
+    color: #fff;
+    font-size: .68rem;
+    font-weight: 700;
+    box-shadow: var(--cim-shadow-icon);
+}
+
+/* Botones chicos de la fila */
+.btn-mini {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .7rem;
+    border-radius: var(--cim-radius);
+    border: 1px solid var(--cim-border-input);
+    background: #fff;
+    color: var(--cim-text-soft);
+    text-decoration: none;
+}
+
+.btn-mini:hover {
+    border-color: var(--cim-primary);
+    color: var(--cim-primary);
+}
+
+.btn-mini.peligro:hover {
+    border-color: var(--cim-danger);
+    color: var(--cim-danger);
+}
+
+/* ── Formularios ─────────────────────────────────────────── */
+
+.emp-form .form-label {
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--cim-muted);
+    margin-bottom: .4rem;
+}
+
+.emp-form .form-control,
+.emp-form .form-select {
+    border: 1px solid var(--cim-border-input);
+    border-radius: var(--cim-radius);
+    padding: .6rem .85rem;
+    font-size: .875rem;
+    color: var(--cim-text);
+}
+
+.emp-form .form-control:focus,
+.emp-form .form-select:focus {
+    border-color: var(--cim-primary);
+    box-shadow: 0 0 0 3px var(--cim-primary-soft);
+}
+
+.emp-form .pie-form {
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--cim-border);
+}
+
+.emp-form .liga-cancelar {
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--cim-muted);
+    text-decoration: none;
+}
+
+.emp-form .liga-cancelar:hover {
+    color: var(--cim-text);
+}
+
+/* ── Ficha ───────────────────────────────────────────────── */
+
+.ficha {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.ficha .campo .etiqueta {
+    display: block;
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--cim-muted);
+    margin-bottom: .3rem;
+}
+
+.ficha .campo .valor {
+    display: block;
+    font-size: .9375rem;
+    color: var(--cim-text);
+}
+
+.ficha .campo .valor a {
+    color: var(--cim-primary);
+    text-decoration: none;
+}
+
+.ficha .campo .valor a:hover {
+    text-decoration: underline;
+}
+
+.ficha .campo .valor.vacio {
+    color: var(--cim-hint);
+}
+
+/* ── Confirmación de borrado ─────────────────────────────── */
+
+.aviso-borrar {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: rgba(251, 99, 64, .08);
+    border-left: 3px solid var(--cim-warning);
+    border-radius: var(--cim-radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: .875rem;
+    color: var(--cim-text-soft);
+}
+
+.aviso-borrar .ico {
+    color: var(--cim-warning);
+    flex: 0 0 20px;
+}
+
+.btn-peligro {
+    display: inline-block;
+    background: var(--cim-grad-danger);
+    color: #fff;
+    border: 0;
+    border-radius: var(--cim-radius);
+    padding: .55rem 1.15rem;
+    font-size: .8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--cim-shadow-icon);
+}
+
+.btn-peligro:hover {
+    color: #fff;
+    opacity: .92;
+}

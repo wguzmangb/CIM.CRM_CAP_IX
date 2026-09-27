@@ -1,0 +1,55 @@
+@page
+@model CIM.CRM.Areas.Identity.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Entrar";
+    ViewData["BodyClass"] = "auth-body";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+}
+
+<main class="auth-card">
+    <div class="auth-brand">
+        <div class="auth-logo">CIM</div>
+        <h1>Bienvenido</h1>
+        <p>Entra con tu cuenta para continuar</p>
+    </div>
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 px-3 small" role="alert"></div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Email" class="form-label"></label>
+            <input asp-for="Input.Email" class="form-control" autocomplete="username"
+                   placeholder="tu@correo.com" autofocus />
+            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Password" class="form-label"></label>
+            <input asp-for="Input.Password" class="form-control" autocomplete="current-password"
+                   placeholder="••••••••" />
+            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+        </div>
+
+        <div class="auth-links">
+            <div class="form-check mb-0">
+                <input asp-for="Input.RememberMe" class="form-check-input" />
+                <label asp-for="Input.RememberMe" class="form-check-label fw-normal"></label>
+            </div>
+            <a asp-page="./ForgotPassword">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button type="submit" class="btn btn-auth">Entrar</button>
+    </form>
+
+    <div class="auth-footer">
+        El acceso lo da el administrador del sistema.
+    </div>
+</main>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

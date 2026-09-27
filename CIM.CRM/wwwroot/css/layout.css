@@ -1,0 +1,543 @@
+/* El marco del sistema: barra lateral, barra superior y encabezado.
+   Lo comparten todas las pantallas de adentro. */
+
+body.cim-app {
+    background: var(--cim-body);
+    font-family: var(--cim-font);
+    color: var(--cim-text-soft);
+    font-size: .875rem;
+    margin: 0;
+}
+
+/* ── Barra lateral ───────────────────────────────────────── */
+
+.cim-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--cim-sidebar);
+    background: var(--cim-surface);
+    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, .15);
+    padding: 1.25rem 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1040;
+    transition: width .2s ease, transform .2s ease;
+}
+
+.cim-marca {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    padding: 0 1.25rem 1.25rem;
+    border-bottom: 1px solid var(--cim-border);
+    margin-bottom: .75rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.cim-marca .cim-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border-radius: var(--cim-radius);
+    background: var(--cim-grad-primary);
+    box-shadow: 0 4px 12px rgba(94, 114, 228, .4);
+    color: #fff;
+    font-weight: 700;
+    font-size: .82rem;
+    letter-spacing: .5px;
+}
+
+.cim-marca span.cim-nombre {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--cim-text);
+}
+
+.cim-nav-titulo {
+    padding: .6rem 1.25rem .35rem;
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--cim-hint);
+    white-space: nowrap;
+}
+
+.cim-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 .35rem;
+}
+
+.cim-nav a {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    padding: .55rem 1.25rem;
+    font-size: .875rem;
+    font-weight: 600;
+    color: var(--cim-text-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    position: relative;
+    transition: color .15s ease, background .15s ease;
+}
+
+.cim-nav a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .35rem;
+    bottom: .35rem;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: transparent;
+}
+
+/* El cuadrito del icono, con el color de su módulo */
+.cim-nav .ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    border-radius: var(--cim-radius);
+    transition: background .15s ease, box-shadow .15s ease, color .15s ease;
+}
+
+.cim-nav .ico svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ico.c-primary { background: rgba(94, 114, 228, .12); color: var(--cim-primary); }
+.ico.c-info    { background: rgba(17, 205, 239, .12);  color: #0da5c0; }
+.ico.c-success { background: rgba(45, 206, 137, .12);  color: #24a46d; }
+.ico.c-warning { background: rgba(251, 99, 64, .12);   color: var(--cim-warning); }
+.ico.c-danger  { background: rgba(245, 54, 92, .12);   color: var(--cim-danger); }
+.ico.c-violeta { background: rgba(130, 94, 228, .12);  color: var(--cim-primary-light); }
+
+.cim-nav a:hover .ico { transform: translateX(1px); }
+
+.cim-nav a:hover {
+    color: var(--cim-text);
+    background: var(--cim-surface-alt);
+}
+
+/* Activo: el icono se prende con su degradado */
+.cim-nav a.activo {
+    color: var(--cim-text);
+    background: var(--cim-surface-alt);
+}
+
+.cim-nav a.activo::before { background: var(--cim-grad-primary); }
+
+.cim-nav a.activo .ico.c-primary { background: var(--cim-grad-primary); color: #fff; box-shadow: 0 4px 10px rgba(94, 114, 228, .4); }
+.cim-nav a.activo .ico.c-info    { background: var(--cim-grad-info);    color: #fff; box-shadow: 0 4px 10px rgba(17, 205, 239, .4); }
+.cim-nav a.activo .ico.c-success { background: var(--cim-grad-success); color: #fff; box-shadow: 0 4px 10px rgba(45, 206, 137, .4); }
+.cim-nav a.activo .ico.c-warning { background: var(--cim-grad-warning); color: #fff; box-shadow: 0 4px 10px rgba(251, 99, 64, .4); }
+.cim-nav a.activo .ico.c-danger  { background: var(--cim-grad-danger);  color: #fff; box-shadow: 0 4px 10px rgba(245, 54, 92, .4); }
+.cim-nav a.activo .ico.c-violeta { background: var(--cim-grad-primary); color: #fff; box-shadow: 0 4px 10px rgba(130, 94, 228, .4); }
+
+.cim-nav a.proximo {
+    color: var(--cim-hint);
+    cursor: default;
+}
+
+.cim-nav a.proximo:hover {
+    color: var(--cim-hint);
+    background: transparent;
+}
+
+.cim-nav a.proximo .ico {
+    filter: grayscale(.55);
+    opacity: .75;
+}
+
+.cim-nav .etiqueta-pronto {
+    margin-left: auto;
+    font-size: .6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--cim-hint);
+    background: var(--cim-surface-alt);
+    border: 1px solid var(--cim-border);
+    border-radius: 10px;
+    padding: .1rem .45rem;
+}
+
+/* ── Barra lateral plegada (solo iconos) ─────────────────── */
+
+body.cim-plegada .cim-sidebar { width: var(--cim-sidebar-mini); }
+body.cim-plegada .cim-main    { margin-left: var(--cim-sidebar-mini); }
+
+body.cim-plegada .cim-marca {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+body.cim-plegada .cim-marca .cim-nombre,
+body.cim-plegada .cim-nav-titulo,
+body.cim-plegada .cim-nav .texto,
+body.cim-plegada .cim-nav .etiqueta-pronto {
+    display: none;
+}
+
+body.cim-plegada .cim-nav a {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Al plegar, el nombre aparece como globito al pasar el ratón */
+body.cim-plegada .cim-nav a[data-nombre]:hover::after {
+    content: attr(data-nombre);
+    position: absolute;
+    left: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--cim-navy);
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .6rem;
+    border-radius: var(--cim-radius);
+    white-space: nowrap;
+    box-shadow: var(--cim-shadow-lg);
+    z-index: 1050;
+}
+
+/* ── Zona principal ──────────────────────────────────────── */
+
+.cim-main {
+    margin-left: var(--cim-sidebar);
+    min-height: 100vh;
+    transition: margin-left .2s ease;
+}
+
+/* ── Barra superior ──────────────────────────────────────── */
+
+.cim-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .9rem 2rem;
+}
+
+.cim-topbar .cim-seccion {
+    color: rgba(255, 255, 255, .92);
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Botón de plegar */
+.cim-plegar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: var(--cim-radius);
+    background: rgba(255, 255, 255, .15);
+    color: #fff;
+    transition: background .15s ease;
+}
+
+.cim-plegar:hover {
+    background: rgba(255, 255, 255, .28);
+}
+
+.cim-plegar svg {
+    width: 16px;
+    height: 16px;
+    transition: transform .2s ease;
+}
+
+body.cim-plegada .cim-plegar svg {
+    transform: rotate(180deg);
+}
+
+.cim-usuario .cim-btn-usuario {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    background: rgba(255, 255, 255, .15);
+    border: 0;
+    border-radius: 50px;
+    padding: .25rem .9rem .25rem .25rem;
+    color: #fff;
+    font-size: .8125rem;
+    font-weight: 600;
+    transition: background .15s ease;
+}
+
+.cim-usuario .cim-btn-usuario:hover {
+    background: rgba(255, 255, 255, .28);
+}
+
+.cim-usuario .cim-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--cim-grad-warning);
+    color: #fff;
+    font-weight: 700;
+    font-size: .78rem;
+    box-shadow: var(--cim-shadow-icon);
+}
+
+.cim-usuario .dropdown-menu {
+    border: 0;
+    box-shadow: var(--cim-shadow-lg);
+    border-radius: var(--cim-radius-lg);
+    font-size: .875rem;
+    min-width: 200px;
+    padding: .5rem;
+}
+
+.cim-usuario .dropdown-item {
+    padding: .5rem .75rem;
+    border-radius: var(--cim-radius);
+    color: var(--cim-text-soft);
+    font-weight: 600;
+}
+
+.cim-usuario .dropdown-item:hover {
+    background: var(--cim-surface-alt);
+    color: var(--cim-primary);
+}
+
+.cim-invitado a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+/* ── Encabezado de color ─────────────────────────────────── */
+
+.cim-header {
+    background: var(--cim-grad-header);
+    padding-bottom: 8rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dos círculos translúcidos de adorno, como el template */
+.cim-header::before,
+.cim-header::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .06);
+    pointer-events: none;
+}
+
+.cim-header::before {
+    width: 380px;
+    height: 380px;
+    top: -160px;
+    right: -80px;
+}
+
+.cim-header::after {
+    width: 220px;
+    height: 220px;
+    bottom: -60px;
+    right: 220px;
+    background: rgba(255, 255, 255, .04);
+}
+
+.cim-header-texto {
+    padding: .75rem 2rem 0;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.cim-header-texto h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+}
+
+.cim-header-texto p {
+    font-size: .875rem;
+    color: rgba(255, 255, 255, .7);
+    margin: .3rem 0 0;
+    text-transform: capitalize;
+}
+
+/* El contenido sube y se monta sobre el color */
+.cim-contenido {
+    margin-top: -7rem;
+    padding: 0 2rem 2.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* ── Piezas comunes ──────────────────────────────────────── */
+
+.cim-card {
+    background: var(--cim-surface);
+    border: 0;
+    border-radius: var(--cim-radius-lg);
+    box-shadow: var(--cim-shadow);
+    margin-bottom: 1.5rem;
+}
+
+.cim-card-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1.15rem 1.5rem;
+    border-bottom: 1px solid var(--cim-border);
+}
+
+.cim-card-encabezado h2 {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--cim-text);
+    margin: 0;
+}
+
+.cim-card-encabezado .liga {
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--cim-primary);
+    text-decoration: none;
+}
+
+.cim-card-encabezado .liga:hover {
+    text-decoration: underline;
+}
+
+.cim-card-cuerpo {
+    padding: 1.5rem;
+}
+
+.cim-vacio {
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    color: var(--cim-hint);
+    font-size: .875rem;
+}
+
+.cim-btn {
+    display: inline-block;
+    background: var(--cim-grad-primary);
+    color: #fff;
+    border: 0;
+    border-radius: var(--cim-radius);
+    padding: .55rem 1.15rem;
+    font-size: .8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(94, 114, 228, .35);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.cim-btn:hover {
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 7px 16px rgba(94, 114, 228, .45);
+}
+
+/* ── Avisos ──────────────────────────────────────────────── */
+
+.cim-aviso {
+    border: 0;
+    border-radius: var(--cim-radius);
+    box-shadow: var(--cim-shadow-sm);
+    font-size: .875rem;
+    font-weight: 600;
+    color: #fff;
+    padding: .85rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.cim-aviso-ok {
+    background: var(--cim-grad-success);
+}
+
+.cim-aviso-error {
+    background: var(--cim-grad-danger);
+}
+
+.cim-aviso .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* ── Pantallas angostas ──────────────────────────────────── */
+
+.cim-velo {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(23, 43, 77, .45);
+    z-index: 1035;
+}
+
+.cim-velo.visible {
+    display: block;
+}
+
+@media (max-width: 991.98px) {
+    .cim-sidebar {
+        transform: translateX(-100%);
+        width: var(--cim-sidebar);
+    }
+
+    .cim-sidebar.abierta {
+        transform: translateX(0);
+    }
+
+    .cim-main,
+    body.cim-plegada .cim-main {
+        margin-left: 0;
+    }
+
+    /* En pantalla chica no se pliega: se desliza */
+    body.cim-plegada .cim-sidebar {
+        width: var(--cim-sidebar);
+    }
+
+    body.cim-plegada .cim-marca .cim-nombre,
+    body.cim-plegada .cim-nav-titulo,
+    body.cim-plegada .cim-nav .texto,
+    body.cim-plegada .cim-nav .etiqueta-pronto {
+        display: revert;
+    }
+
+    body.cim-plegada .cim-nav a,
+    body.cim-plegada .cim-marca {
+        justify-content: flex-start;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    .cim-contenido,
+    .cim-topbar,
+    .cim-header-texto {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

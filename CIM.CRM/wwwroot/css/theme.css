@@ -1,0 +1,64 @@
+/* ────────────────────────────────────────────────────────────
+   CIM.CRM — la paleta del sistema.
+   Este archivo NO maqueta nada: solo define colores y medidas.
+   Cada pantalla trae su propio CSS y usa estos valores con var(--…).
+   Para cambiar el color del sistema completo, se cambia aquí.
+   ──────────────────────────────────────────────────────────── */
+
+:root {
+    /* Marca */
+    --cim-primary: #5e72e4;
+    --cim-primary-dark: #324cdd;
+    --cim-primary-light: #825ee4;
+    --cim-primary-soft: rgba(94, 114, 228, .18);
+
+    /* Azul marino: encabezados y barra superior */
+    --cim-navy: #172b4d;
+    --cim-navy-2: #1a174d;
+
+    /* Semáforo */
+    --cim-success: #2dce89;
+    --cim-info: #11cdef;
+    --cim-warning: #fb6340;
+    --cim-danger: #f5365c;
+
+    /* Texto */
+    --cim-text: #32325d;
+    --cim-text-soft: #525f7f;
+    --cim-muted: #8898aa;
+    --cim-hint: #adb5bd;
+
+    /* Superficies */
+    --cim-body: #f8f9fe;
+    --cim-surface: #ffffff;
+    --cim-surface-alt: #f6f9fc;
+    --cim-border: #e9ecef;
+    --cim-border-input: #dee2e6;
+
+    /* Degradados */
+    --cim-grad-navy: linear-gradient(87deg, var(--cim-navy) 0, var(--cim-navy-2) 100%);
+
+    /* El del encabezado de las pantallas. Cambiar este renglón
+       cambia el color de todo el sistema por dentro. */
+    --cim-grad-header: linear-gradient(87deg, #5e72e4 0, #825ee4 60%, #b06ab3 100%);
+    --cim-grad-primary: linear-gradient(87deg, var(--cim-primary) 0, var(--cim-primary-light) 100%);
+    --cim-grad-success: linear-gradient(87deg, var(--cim-success) 0, #2dcecc 100%);
+    --cim-grad-info: linear-gradient(87deg, var(--cim-info) 0, #1171ef 100%);
+    --cim-grad-warning: linear-gradient(87deg, var(--cim-warning) 0, #fbb140 100%);
+    --cim-grad-danger: linear-gradient(87deg, var(--cim-danger) 0, #f56036 100%);
+
+    /* Formas */
+    --cim-radius: .375rem;
+    --cim-radius-lg: .5rem;
+    --cim-shadow: 0 0 2rem 0 rgba(136, 152, 170, .15);
+    --cim-shadow-sm: 0 0 1rem 0 rgba(136, 152, 170, .1);
+    --cim-shadow-lg: 0 15px 35px rgba(50, 50, 93, .1), 0 5px 15px rgba(0, 0, 0, .07);
+    --cim-shadow-icon: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+
+    /* Medidas del marco */
+    --cim-sidebar: 250px;
+    --cim-sidebar-mini: 78px;
+
+    /* Tipografía */
+    --cim-font: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}

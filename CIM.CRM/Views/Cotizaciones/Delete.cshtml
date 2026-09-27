@@ -1,0 +1,87 @@
+﻿cshtml
+@model CIM.CRM.Models.Cotizacion
+@{
+    ViewData["Title"] = "Eliminar cotización";
+    ViewData["Titulo"] = Model.Folio;
+    ViewData["Subtitulo"] = "Confirmar la eliminación";
+    var cultura = new System.Globalization.CultureInfo("es-MX");
+    var cuantos = Model.Detalles.Count;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cotizaciones.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>¿Eliminar esta cotización?</h2>
+        <a class="liga" asp-action="Index">Volver a la lista</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <div class="aviso-borrar">
+            <span class="ico">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 0 15h16L8 1Zm0 5v4.5h1.2V6H8Zm.6 6.2a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Z"/></svg>
+            </span>
+            <div>
+                Esta acción no se puede deshacer.
+                @if (cuantos > 0)
+                {
+                    <text>
+                        Se van también sus <strong>@cuantos renglón(es)</strong>, porque son parte
+                        de la cotización.
+                    </text>
+                }
+                Si el cliente no la aceptó, conviene dejarla como
+                <strong>Rechazada</strong> en lugar de borrarla: así queda para consulta a qué
+                precio se le había ofrecido.
+            </div>
+        </div>
+
+        <div class="ficha">
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Folio)</span>
+                <span class="valor">@Model.Folio</span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.OportunidadId)</span>
+                <span class="valor @(Model.Oportunidad == null ? "vacio" : "")">
+                    @(Model.Oportunidad == null ? "-" : Model.Oportunidad.Nombre)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">Empresa</span>
+                <span class="valor @(Model.Oportunidad?.Empresa == null ? "vacio" : "")">
+                    @(Model.Oportunidad?.Empresa == null ? "-" : Model.Oportunidad.Empresa.Nombre)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">Estado</span>
+                <span class="valor">
+                    <span class="etiqueta-estado es-@(Model.Estado.ToLower().Replace("ó", "o").Replace(" ", "-"))">@Model.Estado</span>
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Fecha)</span>
+                <span class="valor">@Model.Fecha.ToString("dd/MM/yyyy")</span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Total)</span>
+                <span class="valor importe">@Model.Total.ToString("C2", cultura)</span>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="cot-form">
+            <input type="hidden" asp-for="CotizacionId" />
+            <div class="pie-form">
+                <button type="submit" class="btn-peligro">Sí, eliminar</button>
+                <a asp-action="Index" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+﻿@model CIM.CRM.Models.Contacto
+@{
+    var nombreCompleto = $"{Model.Nombre} {Model.Apellidos}".Trim();
+
+    ViewData["Title"] = "Eliminar contacto";
+    ViewData["Titulo"] = nombreCompleto;
+    ViewData["Subtitulo"] = "Confirmar la eliminación";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/contactos.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>¿Eliminar este contacto?</h2>
+        <a class="liga" asp-action="Index">Volver a la lista</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <div class="aviso-borrar">
+            <span class="ico">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 0 15h16L8 1Zm0 5v4.5h1.2V6H8Zm.6 6.2a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Z"/></svg>
+            </span>
+            <div>
+                Esta acción no se puede deshacer.
+                Si el contacto tiene actividades, oportunidades o prospectos ligados,
+                el sistema no lo va a dejar borrar — primero hay que quitar lo que cuelga de él.
+            </div>
+        </div>
+
+        <div class="ficha">
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Nombre)</span>
+                <span class="valor">@nombreCompleto</span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Empresa)</span>
+                <span class="valor @(Model.Empresa == null ? "vacio" : "")">
+                    @(Model.Empresa == null ? "—" : Model.Empresa.Nombre)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Puesto)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.Puesto) ? "vacio" : "")">
+                    @(string.IsNullOrWhiteSpace(Model.Puesto) ? "—" : Model.Puesto)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Email)</span>
+                <span class="valor @(string.IsNullOrWhiteSpace(Model.Email) ? "vacio" : "")">
+                    @(string.IsNullOrWhiteSpace(Model.Email) ? "—" : Model.Email)
+                </span>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="con-form">
+            <input type="hidden" asp-for="ContactoId" />
+            <div class="pie-form">
+                <button type="submit" class="btn-peligro">Sí, eliminar</button>
+                <a asp-action="Index" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

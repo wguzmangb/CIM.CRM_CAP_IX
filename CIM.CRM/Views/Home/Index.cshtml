@@ -1,0 +1,210 @@
+@model CIM.CRM.Models.DashboardViewModel
+@{
+    var cultura = new System.Globalization.CultureInfo("es-MX");
+
+    ViewData["Title"] = "Inicio";
+    ViewData["Titulo"] = $"{Model.Saludo}{(string.IsNullOrWhiteSpace(Model.NombreUsuario) ? "" : $", {Model.NombreUsuario}")}";
+    ViewData["Subtitulo"] = DateTime.Now.ToString("dddd d 'de' MMMM 'de' yyyy", cultura)
+        + (Model.VeTodaLaCartera ? " · toda la empresa" : " · tu cartera");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
+
+@if (Model.SistemaVacio)
+{
+    <div class="arranque">
+        <span class="arranque-ico">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 15V2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3h3a1 1 0 0 1 1 1v9H2Zm2-2h2v-2H4v2Zm0-4h2V7H4v2Zm0-4h2V3H4v2Zm4 8h2v-2H8v2Zm0-4h2V7H8v2Zm0-4h2V3H8v2Zm4 8h2v-2h-2v2Zm0-4h2V7h-2v2Z"/></svg>
+        </span>
+        <h2>Todavía no hay nada que mostrar</h2>
+        <p>
+            El tablero se llena solo conforme registres empresas, contactos y oportunidades.
+            Empieza por dar de alta una empresa.
+        </p>
+        <a asp-controller="Empresas" asp-action="Create" class="cim-btn">Registrar la primera empresa</a>
+    </div>
+}
+else
+{
+    <div class="kpi-grid">
+
+        <a class="kpi" asp-controller="Empresas" asp-action="Index">
+            <div class="kpi-fila">
+                <div>
+                    <span class="kpi-label">Empresas</span>
+                    <span class="kpi-valor">@Model.TotalEmpresas</span>
+                </div>
+                <span class="kpi-ico grad-primary">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 15V2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3h3a1 1 0 0 1 1 1v9H2Zm2-2h2v-2H4v2Zm0-4h2V7H4v2Zm0-4h2V3H4v2Zm4 8h2v-2H8v2Zm0-4h2V7H8v2Zm0-4h2V3H8v2Zm4 8h2v-2h-2v2Zm0-4h2V7h-2v2Z"/></svg>
+                </span>
+            </div>
+            <p class="kpi-pie">
+                <span class="dato neutro">@Model.TotalContactos</span> contacto(s) registrados
+            </p>
+        </a>
+
+        <div class="kpi">
+            <div class="kpi-fila">
+                <div>
+                    <span class="kpi-label">Prospectos por atender</span>
+                    <span class="kpi-valor">@Model.ProspectosPorAtender</span>
+                </div>
+                <span class="kpi-ico grad-info">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2h14l-5.5 6.5V15L6.5 13V8.5L1 2Z"/></svg>
+                </span>
+            </div>
+            <p class="kpi-pie">Todavía sin convertir en cliente</p>
+        </div>
+
+        <div class="kpi">
+            <div class="kpi-fila">
+                <div>
+                    <span class="kpi-label">Oportunidades abiertas</span>
+                    <span class="kpi-valor">@Model.OportunidadesAbiertas</span>
+                </div>
+                <span class="kpi-ico grad-success">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 13h3V8H1v5Zm5.5 0h3V3h-3v10ZM12 13h3V6h-3v7Z"/></svg>
+                </span>
+            </div>
+            <p class="kpi-pie">
+                <span class="dato ok">@Model.ValorEmbudo.ToString("C0", cultura)</span> en el embudo
+            </p>
+        </div>
+
+        <div class="kpi">
+            <div class="kpi-fila">
+                <div>
+                    <span class="kpi-label">Actividades vencidas</span>
+                    <span class="kpi-valor">@Model.ActividadesVencidas</span>
+                </div>
+                <span class="kpi-ico @(Model.ActividadesVencidas > 0 ? "grad-danger" : "grad-warning")">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm.75 3.5v3.75l3 1.75-.75 1.25-3.75-2.2V4.5h1.5Z"/></svg>
+                </span>
+            </div>
+            <p class="kpi-pie">
+                @if (Model.ActividadesVencidas > 0)
+                {
+                    <span class="dato mal">Atrasadas</span><text> pasó su fecha y siguen pendientes</text>
+                }
+                else
+                {
+                    <span class="dato ok">Al día</span><text> nada atrasado</text>
+                }
+            </p>
+        </div>
+
+    </div>
+
+    <div class="dash-grid">
+
+        <div>
+            <div class="cim-card">
+                <div class="cim-card-encabezado">
+                    <h2>Próximos pendientes</h2>
+                </div>
+
+                @if (!Model.ActividadesPendientes.Any())
+                {
+                    <div class="cim-vacio">No hay actividades pendientes.</div>
+                }
+                else
+                {
+                    @foreach (var actividad in Model.ActividadesPendientes)
+                    {
+                        var vencida = actividad.FechaProgramada.HasValue
+                                   && actividad.FechaProgramada.Value.Date < DateTime.Today;
+                        <div class="pendiente @(vencida ? "vencida" : "")">
+                            <div class="pendiente-fecha">
+                                @if (actividad.FechaProgramada.HasValue)
+                                {
+                                    <span class="dia">@actividad.FechaProgramada.Value.Day</span>
+                                    <span class="mes">@actividad.FechaProgramada.Value.ToString("MMM", cultura)</span>
+                                }
+                                else
+                                {
+                                    <span class="dia">—</span>
+                                    <span class="mes">s/f</span>
+                                }
+                            </div>
+                            <div class="pendiente-texto">
+                                <span class="pendiente-asunto">
+                                    <span class="etiqueta-tipo">@actividad.Tipo</span>@actividad.Asunto
+                                </span>
+                                <span class="pendiente-detalle">
+                                    @actividad.Empresa?.Nombre
+                                    @if (actividad.Contacto != null)
+                                    {
+                                        <text> · @actividad.Contacto.Nombre</text>
+                                    }
+                                </span>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div>
+            <div class="cim-card">
+                <div class="cim-card-encabezado">
+                    <h2>El embudo</h2>
+                </div>
+                <div class="cim-card-cuerpo">
+                    @if (!Model.Embudo.Any())
+                    {
+                        <p class="text-center mb-0" style="color:var(--cim-hint);font-size:.85rem;">
+                            Sin oportunidades abiertas.
+                        </p>
+                    }
+                    else
+                    {
+                        @foreach (var etapa in Model.Embudo)
+                        {
+                            <div class="embudo-fila">
+                                <div class="embudo-cabeza">
+                                    <span class="etapa">@etapa.Etapa (@etapa.Cuantas)</span>
+                                    <span class="monto">@etapa.Importe.ToString("C0", cultura)</span>
+                                </div>
+                                <div class="embudo-barra">
+                                    <span style="width:@(etapa.Porcentaje)%"></span>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="cim-card">
+                <div class="cim-card-encabezado">
+                    <h2>Últimas empresas</h2>
+                    <a class="liga" asp-controller="Empresas" asp-action="Index">Ver todas</a>
+                </div>
+
+                @if (!Model.UltimasEmpresas.Any())
+                {
+                    <div class="cim-vacio">Sin empresas todavía.</div>
+                }
+                else
+                {
+                    <table class="tabla-mini">
+                        <tbody>
+                        @foreach (var empresa in Model.UltimasEmpresas)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Empresas" asp-action="Details"
+                                       asp-route-id="@empresa.EmpresaId">@empresa.Nombre</a>
+                                </td>
+                                <td class="secundario">@empresa.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+}

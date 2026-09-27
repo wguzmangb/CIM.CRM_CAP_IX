@@ -1,0 +1,99 @@
+@page
+@model CIM.CRM.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Nuevo usuario";
+    ViewData["Titulo"] = "Nuevo usuario";
+    ViewData["Subtitulo"] = "Da de alta a alguien del equipo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+}
+
+<div class="cim-card reg-card">
+    <div class="cim-card-encabezado">
+        <h2>Datos del usuario</h2>
+        <a class="liga" asp-controller="Usuarios" asp-action="Index">Volver a Administración</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <form method="post" class="reg-form">
+            <div asp-validation-summary="ModelOnly" class="cim-aviso cim-aviso-error"></div>
+
+            <div class="reg-section">Datos de la persona</div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Input.Nombre" class="form-label"></label>
+                    <input asp-for="Input.Nombre" class="form-control" autofocus />
+                    <span asp-validation-for="Input.Nombre" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Input.Apellidos" class="form-label"></label>
+                    <input asp-for="Input.Apellidos" class="form-control" />
+                    <span asp-validation-for="Input.Apellidos" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Input.Puesto" class="form-label"></label>
+                    <input asp-for="Input.Puesto" class="form-control"
+                           placeholder="Ejecutivo de ventas, Gerente…" />
+                    <span asp-validation-for="Input.Puesto" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="reg-section">Datos de acceso</div>
+
+            <div class="row g-3">
+                <div class="col-12">
+                    <label asp-for="Input.Email" class="form-label"></label>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="off"
+                           placeholder="persona@empresa.com" />
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                    <span class="reg-hint">Con este correo va a entrar al sistema.</span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Input.Password" class="form-label"></label>
+                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password"
+                           placeholder="••••••••" />
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    <span class="reg-hint">Mayúscula, minúscula, número y un signo.</span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password"
+                           placeholder="••••••••" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="reg-section">Permisos</div>
+
+            <div class="reg-permiso">
+                <label asp-for="Input.Rol" class="form-label"></label>
+                <select asp-for="Input.Rol" class="form-select">
+                    <option value="@CIM.CRM.Data.SembrarDatos.RolUsuario">Usuario — trabaja la cartera</option>
+                    <option value="@CIM.CRM.Data.SembrarDatos.RolAdmin">Administrador — además da de alta usuarios</option>
+                </select>
+                <span class="reg-hint">
+                    <strong>Usuario</strong> entra a empresas, contactos, prospectos, oportunidades
+                    y cotizaciones. <strong>Administrador</strong> ve además esta pantalla y puede
+                    dar de alta, cambiar roles y desactivar cuentas.
+                </span>
+            </div>
+
+            <div class="pie-form">
+                <button type="submit" class="cim-btn">Dar de alta</button>
+                <a asp-controller="Usuarios" asp-action="Index" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

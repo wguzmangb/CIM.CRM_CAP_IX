@@ -1,0 +1,134 @@
+﻿@model CIM.CRM.Models.Cotizacion
+@{
+    ViewData["Title"] = Model.Folio;
+    ViewData["Titulo"] = Model.Folio;
+    ViewData["Subtitulo"] = "Ficha de la cotización";
+    var cultura = new System.Globalization.CultureInfo("es-MX");
+    var renglones = Model.Detalles.ToList();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cotizaciones.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>Datos generales</h2>
+        <div class="d-flex gap-2 align-items-center">
+            <a class="btn-mini" asp-action="Edit" asp-route-id="@Model.CotizacionId">Editar</a>
+            <a class="liga" asp-action="Index">Volver a la lista</a>
+        </div>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <div class="ficha">
+            <div class="campo">
+                <span class="etiqueta">Estado</span>
+                <span class="valor">
+                    <span class="etiqueta-estado es-@(Model.Estado.ToLower().Replace("ó", "o").Replace(" ", "-"))">@Model.Estado</span>
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">Total</span>
+                <span class="valor importe">@Model.Total.ToString("C2", cultura)</span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.OportunidadId)</span>
+                <span class="valor @(Model.Oportunidad == null ? "vacio" : "")">
+                    @if (Model.Oportunidad != null)
+                    {
+                        <a asp-controller="Oportunidades" asp-action="Details"
+                           asp-route-id="@Model.OportunidadId">@Model.Oportunidad.Nombre</a>
+                    }
+                    else
+                    {
+                        <text>-</text>
+                    }
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">Empresa</span>
+                <span class="valor @(Model.Oportunidad?.Empresa == null ? "vacio" : "")">
+                    @if (Model.Oportunidad?.Empresa != null)
+                    {
+                        <a asp-controller="Empresas" asp-action="Details"
+                           asp-route-id="@Model.Oportunidad.EmpresaId">@Model.Oportunidad.Empresa.Nombre</a>
+                    }
+                    else
+                    {
+                        <text>-</text>
+                    }
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Fecha)</span>
+                <span class="valor">@Model.Fecha.ToString("dd/MM/yyyy")</span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.UsuarioId)</span>
+                <span class="valor @(Model.Usuario == null ? "vacio" : "")">
+                    @(Model.Usuario == null
+                        ? "-"
+                        : $"{Model.Usuario.Nombre} {Model.Usuario.Apellidos}".Trim())
+                </span>
+            </div>
+        </div>
+
+        <div class="bloque-renglones">
+            <h3>Renglones</h3>
+
+            @if (renglones.Count == 0)
+            {
+                <div class="cim-vacio">Esta cotización no tiene renglones.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="tabla-cim">
+                        <thead>
+                            <tr>
+                                <th>Descripción</th>
+                                <th class="monto">Cantidad</th>
+                                <th class="monto">Precio</th>
+                                <th class="monto">Importe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var renglon in renglones)
+                        {
+                            <tr>
+                                <td>@renglon.Descripcion</td>
+                                <td class="monto">@renglon.Cantidad.ToString("0.##", cultura)</td>
+                                <td class="monto">@renglon.Precio.ToString("C2", cultura)</td>
+                                <td class="monto">@renglon.Importe.ToString("C2", cultura)</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="cot-totales">
+                    <dl>
+                        <div class="renglon">
+                            <dt>@Html.DisplayNameFor(m => m.Subtotal)</dt>
+                            <dd>@Model.Subtotal.ToString("C2", cultura)</dd>
+                        </div>
+                        <div class="renglon">
+                            <dt>IVA 16%</dt>
+                            <dd>@Model.Impuesto.ToString("C2", cultura)</dd>
+                        </div>
+                        <div class="renglon total">
+                            <dt>@Html.DisplayNameFor(m => m.Total)</dt>
+                            <dd>@Model.Total.ToString("C2", cultura)</dd>
+                        </div>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+</div>

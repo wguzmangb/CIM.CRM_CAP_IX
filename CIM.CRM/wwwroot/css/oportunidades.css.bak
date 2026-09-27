@@ -1,0 +1,425 @@
+﻿.opo-buscador {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
+    .opo-buscador input {
+        border: 1px solid var(--cim-border-input);
+        border-radius: var(--cim-radius);
+        padding: .45rem .85rem;
+        font-size: .8125rem;
+        min-width: 260px;
+    }
+
+        .opo-buscador input:focus {
+            outline: 0;
+            border-color: var(--cim-primary);
+            box-shadow: 0 0 0 3px var(--cim-primary-soft);
+        }
+
+    .opo-buscador .liga-limpiar {
+        font-size: .8rem;
+        color: var(--cim-muted);
+        text-decoration: none;
+    }
+
+        .opo-buscador .liga-limpiar:hover {
+            color: var(--cim-primary);
+        }
+
+
+.tabla-cim {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    font-size: .8125rem;
+}
+
+    .tabla-cim thead th {
+        background: var(--cim-surface-alt);
+        color: var(--cim-muted);
+        font-size: .65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        padding: .75rem 1.5rem;
+        border-bottom: 1px solid var(--cim-border);
+        white-space: nowrap;
+    }
+
+    .tabla-cim tbody td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--cim-border);
+        color: var(--cim-text-soft);
+        vertical-align: middle;
+    }
+
+    .tabla-cim tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .tabla-cim tbody tr:hover {
+        background: var(--cim-surface-alt);
+    }
+
+    .tabla-cim .principal {
+        font-weight: 600;
+        color: var(--cim-text);
+        text-decoration: none;
+    }
+
+        .tabla-cim .principal:hover {
+            color: var(--cim-primary);
+        }
+
+    .tabla-cim .sin-dato {
+        color: var(--cim-hint);
+    }
+
+    .tabla-cim .acciones {
+        text-align: right;
+        white-space: nowrap;
+    }
+
+.pie-conteo {
+    padding: .85rem 1.5rem;
+    font-size: .8rem;
+    color: var(--cim-muted);
+}
+
+
+
+.tabla-cim .monto {
+    text-align: right;
+    white-space: nowrap;
+    font-weight: 600;
+    color: var(--cim-text);
+}
+
+.tabla-cim th.monto {
+    font-weight: 700;
+    color: var(--cim-muted);
+}
+
+
+.etiqueta-etapa {
+    display: inline-block;
+    padding: .2rem .6rem;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 700;
+    background: var(--cim-surface-alt);
+    color: var(--cim-muted);
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+    
+    .etiqueta-etapa.et-calificada {
+        color: var(--cim-info);
+        border-color: var(--cim-info);
+    }
+
+    .etiqueta-etapa.et-propuesta {
+        color: var(--cim-primary);
+        border-color: var(--cim-primary);
+    }
+
+    .etiqueta-etapa.et-negociacion {
+        color: var(--cim-warning);
+        border-color: var(--cim-warning);
+    }
+
+    .etiqueta-etapa.et-ganada {
+        color: var(--cim-success);
+        border-color: var(--cim-success);
+    }
+
+    .etiqueta-etapa.et-perdida {
+        color: var(--cim-danger);
+        border-color: var(--cim-danger);
+    }
+
+
+.btn-mini {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .7rem;
+    border-radius: var(--cim-radius);
+    border: 1px solid var(--cim-border-input);
+    background: #fff;
+    color: var(--cim-text-soft);
+    text-decoration: none;
+}
+
+    .btn-mini:hover {
+        border-color: var(--cim-primary);
+        color: var(--cim-primary);
+    }
+
+    .btn-mini.peligro:hover {
+        border-color: var(--cim-danger);
+        .etiqueta-etapa.et-negociacion
+
+{
+    color: var(--cim-warning);
+    border-color: var(--cim-warning);
+}
+
+.etiqueta-etapa.et-ganada {
+    color: var(--cim-success);
+    border-color: var(--cim-success);
+}
+
+.etiqueta-etapa.et-perdida {
+    color: var(--cim-danger);
+    border-color: var(--cim-danger);
+}
+
+
+.btn-mini {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .7rem;
+    border-radius: var(--cim-radius);
+    border: 1px solid var(--cim-border-input);
+    background: #fff;
+    color: var(--cim-text-soft);
+    text-decoration: none;
+}
+
+    .btn-mini:hover {
+        border-color: var(--cim-primary);
+        color: var(--cim-primary);
+    }
+
+    .btn-mini.peligro:hover {
+        border-color: var(--cim-danger);
+        color: var(--cim-danger);
+    }
+
+.opo-form .form-label {
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--cim-muted);
+    margin-bottom: .4rem;
+}
+
+.opo-form .form-control,
+.opo-form .form-select {
+    border: 1px solid var(--cim-border-input);
+    border-radius: var(--cim-radius);
+    padding: .6rem .85rem;
+    font-size: .875rem;
+    color: var(--cim-text);
+}
+
+    .opo-form .form-control:focus,
+    .opo-form .form-select:focus {
+        border-color: var(--cim-primary);
+        box-shadow: 0 0 0 3px var(--cim-primary-soft);
+    }
+
+.opo-form .pie-form {
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--cim-border);
+}
+
+.opo-form .liga-cancelar {
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--cim-muted);
+    text-decoration: none;
+}
+
+    .opo-form .liga-cancelar:hover {
+        color: var(--cim-text);
+    }
+
+.opo-form .nota-campo {
+    display: block;
+    margin-top: .35rem;
+    font-size: .75rem;
+    color: var(--cim-hint);
+}
+
+.ficha {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+    .ficha .campo .etiqueta {
+        display: block;
+        font-size: .65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: var(--cim-muted);
+        margin-bottom: .3rem;
+    }
+
+    .ficha .campo .valor {
+        display: block;
+        font-size: .9375rem;
+        color: var(--cim-text);
+    }
+
+        .ficha .campo .valor a {
+            color: var(--cim-primary);
+            text-decoration: none;
+        }
+
+            .ficha .campo .valor a:hover {
+                text-decoration: underline;
+            }
+
+        .ficha .campo .valor.vacio {
+            color: var(--cim-hint);
+        }
+
+
+        .ficha .campo .valor.importe {
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+
+
+.bloque-cierre {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--cim-border);
+}
+
+.aviso-borrar {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: rgba(251, 99, 64, .08);
+    border-left: 3px solid var(--cim-warning);
+    border-radius: var(--cim-radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: .875rem;
+    color: var(--cim-text-soft);
+}
+
+    .aviso-borrar .ico {
+        color: var(--cim-warning);
+        flex: 0 0 20px;
+    }
+
+.btn-peligro {
+    display: inline-block;
+    background: var(--cim-grad-danger);
+    color: #fff;
+    border: 0;
+    border-radius: var(--cim-radius);
+    padding: .55rem 1.15rem;
+    font-size: .8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--cim-shadow-icon);
+}
+
+    .btn-peligro:hover {
+        color: #fff;
+        opacity: .92;
+    }
+
+/* ── La pantalla de cierre ──────────────────────────────── */
+
+.resultado {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+    .resultado .opcion {
+        display: flex;
+        align-items: flex-start;
+        gap: .75rem;
+        border: 1px solid var(--cim-border-input);
+        border-radius: var(--cim-radius);
+        padding: 1rem 1.15rem;
+        cursor: pointer;
+    }
+
+        .resultado .opcion input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .resultado .opcion .marca {
+            flex: 0 0 18px;
+            width: 18px;
+            height: 18px;
+            margin-top: .15rem;
+            border-radius: 50%;
+            border: 2px solid var(--cim-border-input);
+        }
+
+        .resultado .opcion .texto {
+            display: block;
+            font-size: .8125rem;
+            color: var(--cim-muted);
+        }
+
+            .resultado .opcion .texto strong {
+                display: block;
+                font-size: .9375rem;
+                color: var(--cim-text);
+                margin-bottom: .15rem;
+            }
+
+        /* La tarjeta se pinta del color de lo que se escogió. */
+        .resultado .opcion.ganada:has(input:checked) {
+            border-color: var(--cim-success);
+            box-shadow: 0 0 0 3px rgba(45, 206, 137, .15);
+        }
+
+            .resultado .opcion.ganada:has(input:checked) .marca {
+                border-color: var(--cim-success);
+                background: var(--cim-success);
+            }
+
+        .resultado .opcion.perdida:has(input:checked) {
+            border-color: var(--cim-danger);
+            box-shadow: 0 0 0 3px rgba(245, 54, 92, .15);
+        }
+
+            .resultado .opcion.perdida:has(input:checked) .marca {
+                border-color: var(--cim-danger);
+                background: var(--cim-danger);
+            }
+
+.btn-cerrar {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .8rem;
+    border-radius: var(--cim-radius);
+    border: 1px solid var(--cim-primary);
+    background: var(--cim-primary);
+    color: #fff;
+    cursor: pointer;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+    .btn-cerrar:hover {
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: var(--cim-shadow-icon);
+    }

@@ -1,0 +1,87 @@
+﻿@model CIM.CRM.Models.Prospecto
+@{
+    ViewData["Title"] = "Editar prospecto";
+    ViewData["Titulo"] = Model.Nombre;
+    ViewData["Subtitulo"] = "Editando los datos del prospecto";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/prospectos.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>Datos del prospecto</h2>
+        <a class="liga" asp-action="Details" asp-route-id="@Model.ProspectoId">Ver la ficha</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <form asp-action="Edit" method="post" class="pro-form">
+            <div asp-validation-summary="ModelOnly" class="cim-aviso cim-aviso-error"></div>
+
+            <input type="hidden" asp-for="ProspectoId" />
+            <input type="hidden" asp-for="FechaRegistro" />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Nombre" class="form-label"></label>
+                    <input asp-for="Nombre" class="form-control" autofocus />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="NombreEmpresa" class="form-label"></label>
+                    <input asp-for="NombreEmpresa" class="form-control" />
+                    <span asp-validation-for="NombreEmpresa" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Telefono" class="form-label"></label>
+                    <input asp-for="Telefono" class="form-control" />
+                    <span asp-validation-for="Telefono" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Origen" class="form-label"></label>
+                    <input asp-for="Origen" class="form-control" />
+                    <span asp-validation-for="Origen" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Estado" class="form-label"></label>
+                    <select asp-for="Estado" class="form-select"
+                            asp-items="@(ViewData["Estados"] as SelectList)">
+                    </select>
+                    <span asp-validation-for="Estado" class="text-danger small"></span>
+                </div>
+
+                @if ((bool?)ViewData["PuedeAsignar"] == true)
+                {
+                    <div class="col-md-4">
+                        <label asp-for="UsuarioId" class="form-label"></label>
+                        <select asp-for="UsuarioId" class="form-select"
+                                asp-items="@(ViewData["Ejecutivos"] as SelectList)">
+                            <option value="">— Sin asignar —</option>
+                        </select>
+                        <span asp-validation-for="UsuarioId" class="text-danger small"></span>
+                    </div>
+                }
+            </div>
+
+            <div class="pie-form">
+                <button type="submit" class="cim-btn">Guardar cambios</button>
+                <a asp-action="Index" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

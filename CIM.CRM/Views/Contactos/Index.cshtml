@@ -1,0 +1,123 @@
+﻿@model IEnumerable<CIM.CRM.Models.Contacto>
+@{
+    ViewData["Title"] = "Contactos";
+    ViewData["Titulo"] = "Contactos";
+    ViewData["Subtitulo"] = "Las personas con las que se trata en cada empresa";
+    var buscar = ViewData["Buscar"] as string;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/contactos.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <form asp-action="Index" method="get" class="con-buscador">
+            <input type="text" name="buscar" value="@buscar" placeholder="Buscar por nombre, correo o empresa" />
+            <button type="submit" class="btn-mini">Buscar</button>
+            @if (!string.IsNullOrWhiteSpace(buscar))
+            {
+                <a asp-action="Index" class="liga-limpiar">Limpiar</a>
+            }
+        </form>
+
+        <a asp-action="Create" class="cim-btn">Nuevo contacto</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="cim-vacio">
+            @if (string.IsNullOrWhiteSpace(buscar))
+            {
+                <text>Todavía no hay contactos registrados.</text>
+            }
+            else
+            {
+                <text>Ningún contacto coincide con «@buscar».</text>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="tabla-cim">
+                <thead>
+                    <tr>
+                        <th>Contacto</th>
+                        <th>Empresa</th>
+                        <th>Puesto</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th class="acciones">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var contacto in Model)
+                {
+                    var nom = contacto.Nombre ?? "";
+                    var ape = contacto.Apellidos ?? "";
+                    var ini = ((nom.Length > 0 ? nom[0].ToString() : "?")
+                            + (ape.Length > 0 ? ape[0].ToString() : "")).ToUpper();
+                    <tr>
+                        <td>
+                            <span class="persona">
+                                <span class="iniciales">@ini</span>
+                                <a class="principal" asp-action="Details" asp-route-id="@contacto.ContactoId">
+                                    @($"{nom} {ape}".Trim())
+                                </a>
+                            </span>
+                        </td>
+                        <td>
+                            @if (contacto.Empresa != null)
+                            {
+                                <a class="liga-empresa" asp-controller="Empresas" asp-action="Details"
+                                   asp-route-id="@contacto.EmpresaId">@contacto.Empresa.Nombre</a>
+                            }
+                            else
+                            {
+                                <span class="sin-dato">—</span>
+                            }
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(contacto.Puesto))
+                            {
+                                <span class="sin-dato">—</span>
+                            }
+                            else
+                            {
+                                @contacto.Puesto
+                            }
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(contacto.Telefono))
+                            {
+                                <span class="sin-dato">—</span>
+                            }
+                            else
+                            {
+                                @contacto.Telefono
+                            }
+                        </td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(contacto.Email))
+                            {
+                                <span class="sin-dato">—</span>
+                            }
+                            else
+                            {
+                                @contacto.Email
+                            }
+                        </td>
+                        <td class="acciones">
+                            <a class="btn-mini" asp-action="Edit" asp-route-id="@contacto.ContactoId">Editar</a>
+                            <a class="btn-mini peligro" asp-action="Delete" asp-route-id="@contacto.ContactoId">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pie-conteo">@Model.Count() contacto(s).</div>
+    }
+</div>

@@ -1,0 +1,116 @@
+@model CIM.CRM.Models.Oportunidad
+@{
+    ViewData["Title"] = "Cerrar oportunidad";
+    ViewData["Titulo"] = Model.Nombre;
+    ViewData["Subtitulo"] = "Cerrar la venta";
+    var cultura = new System.Globalization.CultureInfo("es-MX");
+    var hoy = DateOnly.FromDateTime(DateTime.Now);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/oportunidades.css" asp-append-version="true" />
+}
+
+<div class="cim-card">
+    <div class="cim-card-encabezado">
+        <h2>¿Cómo terminó esta venta?</h2>
+        <a class="liga" asp-action="Details" asp-route-id="@Model.OportunidadId">Volver a la ficha</a>
+    </div>
+
+    <div class="cim-card-cuerpo">
+        <div class="ficha">
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.EmpresaId)</span>
+                <span class="valor @(Model.Empresa == null ? "vacio" : "")">
+                    @(Model.Empresa == null ? "-" : Model.Empresa.Nombre)
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">@Html.DisplayNameFor(m => m.Importe)</span>
+                <span class="valor importe @(Model.Importe == null ? "vacio" : "")">
+                    @(Model.Importe == null ? "-" : Model.Importe.Value.ToString("C0", cultura))
+                </span>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">Etapa en la que va</span>
+                <span class="valor">
+                    <span class="etiqueta-etapa et-@(Model.Etapa.ToLower().Replace("ó", "o"))">@Model.Etapa</span>
+                </span>
+            </div>
+        </div>
+
+        <form asp-action="Cerrar" method="post" class="opo-form" style="margin-top:1.5rem">
+            <input type="hidden" name="id" value="@Model.OportunidadId" />
+
+            <div class="resultado">
+                <label class="opcion ganada">
+                    <input type="radio" name="resultado" value="Ganada" required />
+                    <span class="marca"></span>
+                    <span class="texto">
+                        <strong>Se ganó</strong>
+                        El cliente compró.
+                    </span>
+                </label>
+
+                <label class="opcion perdida">
+                    <input type="radio" name="resultado" value="Perdida" />
+                    <span class="marca"></span>
+                    <span class="texto">
+                        <strong>Se perdió</strong>
+                        No se hizo la venta.
+                    </span>
+                </label>
+            </div>
+
+            <div class="row g-3" style="margin-top:.5rem">
+                <div class="col-md-4">
+                    <label class="form-label" for="fechaCierre">Fecha de cierre</label>
+                    <input type="date" id="fechaCierre" name="fechaCierre" class="form-control"
+                           value="@hoy.ToString("yyyy-MM-dd")" />
+                    <span class="nota-campo">Si se deja vacía, se pone la de hoy.</span>
+                </div>
+
+                <div class="col-md-8" id="caja-motivo" hidden>
+                    <label class="form-label" for="motivoPerdida">Motivo de la pérdida</label>
+                    <input type="text" id="motivoPerdida" name="motivoPerdida" class="form-control"
+                           maxlength="250" placeholder="Precio, tiempo de entrega, se fue con otro proveedor" />
+                    <span class="nota-campo">Obligatorio cuando la venta se perdió.</span>
+                </div>
+            </div>
+
+            <div class="pie-form">
+                <button type="submit" class="cim-btn">Cerrar la venta</button>
+                <a asp-action="Details" asp-route-id="@Model.OportunidadId" class="liga-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            var cajaMotivo = document.getElementById("caja-motivo");
+            var motivo = document.getElementById("motivoPerdida");
+
+            function revisar() {
+                var perdida = document.querySelector('input[name="resultado"]:checked');
+                var esPerdida = perdida !== null && perdida.value === "Perdida";
+
+                cajaMotivo.hidden = !esPerdida;
+                motivo.required = esPerdida;
+
+                if (!esPerdida) {
+                    motivo.value = "";
+                }
+            }
+
+            document.querySelectorAll('input[name="resultado"]').forEach(function (opcion) {
+                opcion.addEventListener("change", revisar);
+            });
+
+            revisar();
+        })();
+    </script>
+}

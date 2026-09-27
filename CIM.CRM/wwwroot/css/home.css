@@ -1,0 +1,297 @@
+/* Pantalla de inicio — el tablero.
+   Los colores salen de theme.css. Aquí solo va la maqueta. */
+
+/* ── Tarjetas de indicadores ─────────────────────────────── */
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.kpi {
+    background: var(--cim-surface);
+    border-radius: var(--cim-radius-lg);
+    box-shadow: var(--cim-shadow);
+    padding: 1.5rem;
+    text-decoration: none;
+    display: block;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+a.kpi:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--cim-shadow-lg);
+}
+
+.kpi-fila {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.kpi-label {
+    display: block;
+    font-size: .6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--cim-muted);
+    margin-bottom: .35rem;
+}
+
+.kpi-valor {
+    display: block;
+    font-size: 1.625rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--cim-text);
+}
+
+.kpi-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    color: #fff;
+    box-shadow: var(--cim-shadow-icon);
+    flex: 0 0 48px;
+}
+
+.kpi-ico svg {
+    width: 20px;
+    height: 20px;
+}
+
+.kpi-ico.grad-primary { background: var(--cim-grad-primary); }
+.kpi-ico.grad-info    { background: var(--cim-grad-info); }
+.kpi-ico.grad-success { background: var(--cim-grad-success); }
+.kpi-ico.grad-warning { background: var(--cim-grad-warning); }
+.kpi-ico.grad-danger  { background: var(--cim-grad-danger); }
+
+.kpi-pie {
+    margin: 1rem 0 0;
+    font-size: .8125rem;
+    color: var(--cim-muted);
+}
+
+.kpi-pie .dato {
+    font-weight: 700;
+    margin-right: .35rem;
+}
+
+.kpi-pie .dato.ok    { color: var(--cim-success); }
+.kpi-pie .dato.mal   { color: var(--cim-danger); }
+.kpi-pie .dato.neutro{ color: var(--cim-text-soft); }
+
+/* ── Rejilla de paneles ──────────────────────────────────── */
+
+.dash-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 1100px) {
+    .dash-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Lista de pendientes ─────────────────────────────────── */
+
+.pendiente {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: .9rem 1.5rem;
+    border-bottom: 1px solid var(--cim-border);
+}
+
+.pendiente:last-child {
+    border-bottom: 0;
+}
+
+.pendiente-fecha {
+    flex: 0 0 50px;
+    text-align: center;
+    border-radius: var(--cim-radius);
+    background: var(--cim-surface-alt);
+    padding: .35rem 0;
+    line-height: 1.15;
+}
+
+.pendiente-fecha .dia {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cim-text);
+}
+
+.pendiente-fecha .mes {
+    display: block;
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--cim-muted);
+}
+
+.pendiente.vencida .pendiente-fecha {
+    background: rgba(245, 54, 92, .12);
+}
+
+.pendiente.vencida .pendiente-fecha .dia,
+.pendiente.vencida .pendiente-fecha .mes {
+    color: var(--cim-danger);
+}
+
+.pendiente-texto {
+    min-width: 0;
+}
+
+.pendiente-asunto {
+    display: block;
+    font-weight: 600;
+    color: var(--cim-text);
+    font-size: .9rem;
+}
+
+.pendiente-detalle {
+    display: block;
+    font-size: .8125rem;
+    color: var(--cim-muted);
+    margin-top: .15rem;
+}
+
+.etiqueta-tipo {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--cim-primary);
+    background: var(--cim-primary-soft);
+    border-radius: 10px;
+    padding: .15rem .5rem;
+    margin-right: .45rem;
+}
+
+/* ── Embudo ──────────────────────────────────────────────── */
+
+.embudo-fila {
+    margin-bottom: 1.15rem;
+}
+
+.embudo-fila:last-child {
+    margin-bottom: 0;
+}
+
+.embudo-cabeza {
+    display: flex;
+    justify-content: space-between;
+    font-size: .8125rem;
+    margin-bottom: .35rem;
+}
+
+.embudo-cabeza .etapa {
+    font-weight: 600;
+    color: var(--cim-text-soft);
+}
+
+.embudo-cabeza .monto {
+    color: var(--cim-muted);
+}
+
+.embudo-barra {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--cim-surface-alt);
+    overflow: hidden;
+}
+
+.embudo-barra span {
+    display: block;
+    height: 100%;
+    border-radius: 3px;
+    background: var(--cim-grad-primary);
+}
+
+/* ── Tabla compacta ──────────────────────────────────────── */
+
+.tabla-mini {
+    width: 100%;
+    font-size: .8125rem;
+    border-collapse: collapse;
+}
+
+.tabla-mini td {
+    padding: .75rem 1.5rem;
+    border-bottom: 1px solid var(--cim-border);
+}
+
+.tabla-mini tr:last-child td {
+    border-bottom: 0;
+}
+
+.tabla-mini a {
+    color: var(--cim-text);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.tabla-mini a:hover {
+    color: var(--cim-primary);
+}
+
+.tabla-mini .secundario {
+    color: var(--cim-muted);
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* ── Sistema recién instalado ────────────────────────────── */
+
+.arranque {
+    background: var(--cim-surface);
+    border-radius: var(--cim-radius-lg);
+    box-shadow: var(--cim-shadow);
+    padding: 3.5rem 2rem;
+    text-align: center;
+}
+
+.arranque .arranque-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--cim-grad-primary);
+    box-shadow: var(--cim-shadow-icon);
+    color: #fff;
+    margin-bottom: 1.25rem;
+}
+
+.arranque .arranque-ico svg {
+    width: 28px;
+    height: 28px;
+}
+
+.arranque h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--cim-text);
+    margin-bottom: .5rem;
+}
+
+.arranque p {
+    color: var(--cim-muted);
+    max-width: 460px;
+    margin: 0 auto 1.75rem;
+    font-size: .9rem;
+}
